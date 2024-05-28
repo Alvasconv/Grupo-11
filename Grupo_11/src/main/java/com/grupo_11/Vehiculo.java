@@ -4,6 +4,8 @@
  */
 package com.grupo_11;
 
+import Modelo.ArrayList;
+import Modelo.CircularList;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.BufferedReader;
@@ -23,8 +25,8 @@ public class Vehiculo {
     private String transmision; 
     private double peso; 
     private String ubicacion; 
-    private ArrayList reparaciones; 
-    private LinkedList fotos; 
+    private ArrayList<String> reparaciones; 
+    private CircularList<String> fotos; 
     
     public Vehiculo(String s) {
         String[] parts = s.split(", ");
@@ -45,7 +47,7 @@ public class Vehiculo {
         }
             
         String[] fotosArray = parts[10].split("=")[1].split(",");
-        this.fotos = new LinkedList<>();
+        this.fotos = new CircularList<>();
         for (String foto : fotosArray) {
             this.fotos.add(foto);
         }
