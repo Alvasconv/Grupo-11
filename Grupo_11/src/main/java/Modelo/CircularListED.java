@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
  *
  * @author vv
  */
-public class CircularList<E> {
+public class CircularListED<E> {
     
     private Node first;
     private Node last;
@@ -27,7 +27,7 @@ public class CircularList<E> {
         }
     }
    
-    public CircularList(){
+    public CircularListED(){
         this.first = null;
         this.last = null;
         this.size = 0;

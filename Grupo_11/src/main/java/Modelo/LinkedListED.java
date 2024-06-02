@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
  *
  * @author vv
  */
-public class LinkedList<E> {
+public class LinkedListED<E> {
     
     private Node first;
     private Node last;
@@ -27,7 +27,7 @@ public class LinkedList<E> {
         }
     }
    
-    public LinkedList(){
+    public LinkedListED(){
         this.first = null;
         this.last = null;
         this.size = 0;

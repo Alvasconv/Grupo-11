@@ -7,17 +7,17 @@ import java.util.NoSuchElementException;
  *
  * @author vv
  */
-public class ArrayList<E> implements Iterable<E>{
+public class ArrayListED<E> implements Iterable<E>{
     
     private int capacity = 10;
     private int effectiveSize;
     private E[] elements;
     
-    public ArrayList(){
+    public ArrayListED(){
         this.elements = (E[]) new Object[this.capacity];
         this.effectiveSize = 0;
     }
-    public ArrayList(int capacity){
+    public ArrayListED(int capacity){
         this.elements = (E[]) new Object[capacity];
         this.effectiveSize = 0;
     }
