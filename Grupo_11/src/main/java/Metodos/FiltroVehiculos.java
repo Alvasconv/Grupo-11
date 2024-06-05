@@ -4,57 +4,52 @@
  */
 package Metodos;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import Modelo.*;
 import com.grupo_11.*;
 
 /**
  *
  * @author hilda
  */
-
-
 public class FiltroVehiculos {
 
-    public static List<Vehiculo> filtrarPorMarcaYModelo(List<Vehiculo> vehiculos, String marca, String modelo) {
-        List<Vehiculo> filtrados = vehiculos.stream()
-                .filter(v -> v.getMarca().equalsIgnoreCase(marca) && v.getModelo().equalsIgnoreCase(modelo))
-                .collect(Collectors.toList());
-        if (filtrados.isEmpty()) {
+    public static ArrayListED<Vehiculo> filtrarPorMarcaYModelo(ArrayListED<Vehiculo> vehiculos, String marca, String modelo) {
+        ArrayListED<Vehiculo> resultado = new ArrayListED<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            if (vehiculo.getMarca().equals(marca) && vehiculo.getModelo().equals(modelo)) {
+                resultado.add(vehiculo);
+            }
+        }
+        if (resultado.isEmpty()) {
             System.out.println("No existe el vehículo especificado.");
         }
-        return filtrados;
+        return resultado;
     }
 
-    public static List<Vehiculo> filtrarPorRangoDePrecio(List<Vehiculo> vehiculos, double precioMin, double precioMax) {
-        List<Vehiculo> filtrados = vehiculos.stream()
-                .filter(v -> v.getPrecio() >= precioMin && v.getPrecio() <= precioMax)
-                .collect(Collectors.toList());
-        if (filtrados.isEmpty()) {
+    public static ArrayListED<Vehiculo> filtrarPorRangoDePrecio(ArrayListED<Vehiculo> vehiculos, double precioMin, double precioMax) {
+        ArrayListED<Vehiculo> resultado = new ArrayListED<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            if (vehiculo.getPrecio() >= precioMin && vehiculo.getPrecio() <= precioMax) {
+                resultado.add(vehiculo);
+            }
+        }
+        if (resultado.isEmpty()) {
             System.out.println("No existen vehículos dentro del rango de precio especificado.");
         }
-        return filtrados;
+        return resultado;
     }
 
-    public static List<Vehiculo> filtrarPorRangoDeKilometraje(List<Vehiculo> vehiculos, int kmMin, int kmMax) {
-        List<Vehiculo> filtrados = vehiculos.stream()
-                .filter(v -> v.getKilometraje() >= kmMin && v.getKilometraje() <= kmMax)
-                .collect(Collectors.toList());
-        if (filtrados.isEmpty()) {
+    public static ArrayListED<Vehiculo> filtrarPorRangoDeKilometraje(ArrayListED<Vehiculo> vehiculos, int kmMin, int kmMax) {
+        ArrayListED<Vehiculo> resultado = new ArrayListED<>();
+        for (Vehiculo vehiculo : vehiculos) {
+            if (vehiculo.getKilometraje() >= kmMin && vehiculo.getKilometraje() <= kmMax) {
+                resultado.add(vehiculo);
+            }
+        }
+        if (resultado.isEmpty()) {
             System.out.println("No existen vehículos dentro del rango de kilometraje especificado.");
         }
-        return filtrados;
+        return resultado;
     }
 
-    public static List<Vehiculo> filtrarPorVariosCriterios(List<Vehiculo> vehiculos, String marca, String modelo, double precioMin, double precioMax, int kmMin, int kmMax) {
-        List<Vehiculo> filtrados = vehiculos.stream()
-                .filter(v -> v.getMarca().equalsIgnoreCase(marca) && v.getModelo().equalsIgnoreCase(modelo))
-                .filter(v -> v.getPrecio() >= precioMin && v.getPrecio() <= precioMax)
-                .filter(v -> v.getKilometraje() >= kmMin && v.getKilometraje() <= kmMax)
-                .collect(Collectors.toList());
-        if (filtrados.isEmpty()) {
-            System.out.println("No existen vehículos que cumplan con los criterios especificados.");
-        }
-        return filtrados;
-    }
 }

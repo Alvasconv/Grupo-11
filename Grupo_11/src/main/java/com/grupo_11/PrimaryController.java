@@ -14,7 +14,7 @@ public class PrimaryController {
     private Button botonEditar;
     @FXML
     private Button botonRemover;
-    private void switchToSecondary() throws IOException {
+    private void regresar() throws IOException {
         App.setRoot("secondary");
     }
 
