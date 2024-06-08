@@ -49,6 +49,8 @@ public class Vehiculo implements Serializable {
         this.reparaciones = reparaciones;
         this.fotos = fotos;
     }
+    
+    public Vehiculo(){ }
 
     public static void guardarListaVehiculos(ArrayListED<Vehiculo> vehiculos) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivoVehiculos))) {
@@ -171,5 +173,12 @@ public class Vehiculo implements Serializable {
     public void setFotos(CircularListED<String> fotos) {
         this.fotos = fotos;
     }
+
+    @Override
+    public String toString() {
+        return "Vehiculo{" + "precio=" + precio + ", marca=" + marca + ", modelo=" + modelo + ", a\u00f1o=" + año + ", kilometraje=" + kilometraje + ", motor=" + motor + ", transmision=" + transmision + ", peso=" + peso + ", ubicacion=" + ubicacion + ", reparaciones=" + reparaciones + ", fotos=" + fotos + '}';
+    }
+    
+    
 
 }

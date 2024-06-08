@@ -2,7 +2,6 @@ package Modelo;
 
 import java.util.NoSuchElementException;
 
-
 /**
  *
  * @author vv
@@ -37,124 +36,22 @@ public class LinkedListED<E> {
     public int size() {
         return size;
     }
-    public E getLast (){
-        return this.last.content;
-    }
-    public E getFirst (){
-        return this.first.content;
-    }
 
     
     public boolean isEmpty() {
         return this.first==null;
     }
     
+    public boolean hasNext(E e){
+        if(e==null) {throw new IllegalArgumentException("Se ha ingresado un objeto null como argumento.");}
+        Node n = this.getNode(e);
+        return n.next!=null;
+    }
+    
     public void clear() {
         this.first = null;
         this.last = null;
         this.size = 0;
-    }
-
-    public boolean add(E e) {
-        if(e==null) {throw new IllegalArgumentException("Se ha ingresado un objeto null como argumento.");}
-        Node nn = new Node(e,this.last, null);
-        if(this.isEmpty()){
-            this.first = nn;
-            this.last = nn;
-            this.size++;
-            return true;
-        }
-        this.last.next = nn;
-        this.last = nn;
-        this.size++;
-        return true;
-    }
-    
-    public boolean add(int index, E element) {
-        if(index<0 || index>=this.size) {throw new IndexOutOfBoundsException("Indice ingresado fuera del rango. Cantidad actual de elementos en la lista: "+ this.size());}
-        else if(element==null) {throw new IllegalArgumentException("Se ha ingresado un objeto null como argumento.");} 
-        Node nn = new Node(element);
-        if(index==0){
-            nn.next = this.first;
-            this.first.back = nn;
-            this.first = nn;
-            this.size++;
-            return true;
-        }
-        Node tempNode = this.getNode(index);
-        tempNode.back.next = nn;
-        nn.back = tempNode.back;
-        nn.next = tempNode;
-        tempNode.back = nn;
-        this.size++;
-        return true;
-    }
-
-    public boolean remove(Object o) {
-         if(o==null){throw new IllegalArgumentException("Se ha ingresado un objeto null como argumento.");}
-        else if(this.isEmpty()) {throw new IndexOutOfBoundsException("No hay elementos en la lista.");}
-        else if(this.first.content.equals(o)) {return removeFirst();}
-        else if(this.last.content.equals(o)) {return removeLast();}
-        
-        Node actualNode = this.first;
-        int i = 0;
-        while (i<this.size){
-            if(actualNode.content.equals(o)){
-                actualNode.back.next = actualNode.next;
-                actualNode.next.back = actualNode.back;
-                this.size--;
-                return true;
-            }else{
-            actualNode = actualNode.next;
-            i++;
-            }
-        }
-        throw new NoSuchElementException("El objeto ingresado no fue encontrado en la lista.");
-    }
-
-    public boolean remove(int index) {
-        if(index<0 || index>=size) {throw new IndexOutOfBoundsException("Indice ingresado fuera del rango. Cantidad actual de elementos en la lista: "+ this.size());}
-        else if(this.isEmpty()) {throw new IndexOutOfBoundsException("No hay elementos en la lista.");}
-        else if(index==0) {return removeFirst();}
-        else if(index==this.size-1) {return removeLast();}
-        
-        Node nn = this.first;
-        int i = 0;
-        while (i<index){
-             nn = nn.next;
-            i++;
-        }
-        nn.back.next = nn.next;
-        nn.next.back = nn.back;
-        this.size--;
-        return true;
-    }
-    
-    public E get(int index) {
-        if(index<0 || index>=this.size) {throw new IndexOutOfBoundsException("Indice ingresado fuera del rango. Cantidad actual de elementos en la lista: "+ this.size());}
-        if(index==this.size-1) {return this.last.content;}
-        int i =0;
-        Node n = this.first;
-        while (i<index){
-            n = n.next;
-            i++;
-        }
-        return n.content;
-    }
-    
-    public int indexOf(Object o) {
-        if(o== null) {throw new IllegalArgumentException("Se ha ingresado un objeto null como argumento.");} 
-        else if(this.isEmpty()) {throw new IndexOutOfBoundsException("No hay elementos en la lista.");}
-        int i =0;
-        Node n = this.first;
-        while (i<this.size){
-            if(n.content.equals(o)) {return i;}
-            else{
-                n = n.next;
-                i++;
-            }
-        }
-        throw new NoSuchElementException("El objeto ingresado no fue encontrado en la lista.");
     }
     
     public boolean contains(Object o) {
@@ -185,6 +82,32 @@ public class LinkedListED<E> {
         return temp.back.content;
     }
     
+    public boolean add(E e, E actual) {
+        if(e==null) {throw new IllegalArgumentException("Se ha ingresado un objeto null como argumento.");}
+        Node nn = new Node(e,this.last, null);
+        if(this.isEmpty()){
+            this.first = nn;
+            this.last = nn;
+            this.size++;
+            return true;
+        }
+        if(!actual.equals(this.last.content)){
+            Node n = this.getNode(actual);
+            n.next = nn;
+            nn.back = n;
+            this.last = nn;
+            this.size++;
+            return true;
+        }
+        this.last.next = nn;
+        this.last = nn;
+        this.size++;
+        return true;
+    }
+    
+    public E getLast (){
+        return this.last.content;
+    }
     
     
     private Node getNode(E e) {
@@ -196,30 +119,5 @@ public class LinkedListED<E> {
             i++;
         }
         return n;
-    }
-    
-    private Node getNode(int index) {
-        if(index<0 || index>=this.size) {throw new IndexOutOfBoundsException("Indice ingresado fuera del rango. Cantidad actual de elementos en la lista: "+ this.size());}
-        int i =0;
-        Node n = this.first;
-        while (i<index){
-            n = n.next;
-            i++;
-        }
-        return n;
-    }
-    
-    private boolean removeFirst() {
-        this.first.next.back = null;
-        this.first = this.first.next;
-        this.size--;
-        return true;
-    }
-    
-    private boolean removeLast() {
-        this.last.back.next = null;
-        this.last = this.last.back;
-        this.size--;
-        return true;
     }
 }
