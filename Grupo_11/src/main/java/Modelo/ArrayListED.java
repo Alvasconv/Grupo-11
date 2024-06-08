@@ -2,12 +2,14 @@ package Modelo;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.io.Serializable;
+
 
 /**
  *
  * @author vv
  */
-public class ArrayListED<E> implements Iterable<E> {
+public class ArrayListED<E> implements Iterable<E>, Serializable {
 
     private int capacity = 10;
     private int effectiveSize;
@@ -165,4 +167,10 @@ public class ArrayListED<E> implements Iterable<E> {
         this.capacity = this.capacity * 2;
 
     }
+
+    @Override
+    public String toString() {
+        return "ArrayListED{" + "capacity=" + capacity + ", effectiveSize=" + effectiveSize + ", elements=" + elements + '}';
+    }
+    
 }

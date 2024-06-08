@@ -1,18 +1,21 @@
 package Modelo;
 
 import java.util.NoSuchElementException;
+import java.io.Serializable;
+
 
 /**
  *
  * @author vv
  */
-public class CircularListED<E> {
+public class CircularListED<E> implements Serializable {
     
-    private Node first;
-    private Node last;
+    public Node first;
+    public Node last;
     private int size;
     
-    protected class Node{
+    
+    public class Node implements Serializable{
         E content;
         Node back;
         Node next;
@@ -25,6 +28,12 @@ public class CircularListED<E> {
         public Node(E content){
             this.content = content;
         }
+
+        public E getContent() {
+            return content;
+        }
+        
+        
     }
    
     public CircularListED(){
@@ -217,4 +226,10 @@ public class CircularListED<E> {
         this.size--;
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "CircularListED{" + "first=" + first + ", last=" + last + ", size=" + size + '}';
+    }
+    
 }
