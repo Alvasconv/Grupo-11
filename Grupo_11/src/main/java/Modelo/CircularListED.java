@@ -58,13 +58,14 @@ public class CircularListED<E> implements Serializable {
 
     public boolean add(E e) {
         if(e==null) {throw new IllegalArgumentException("Se ha ingresado un objeto null como argumento.");}
-        Node newNode = new Node(e,this.last,this.first);
+        Node newNode = new Node(e,null,this.first);
         if(this.isEmpty()){
             this.first = newNode;
             this.last = newNode;
             this.size++;
             return true;
         }
+        newNode.back = this.getNode(size-1);
         this.last.next = newNode;
         this.first.back= newNode;
         this.last = newNode;
@@ -72,33 +73,14 @@ public class CircularListED<E> implements Serializable {
         return true;
     }
     
-    public boolean add(int index, E element) {
-        if(index<0 || index>=this.size) {throw new IndexOutOfBoundsException("Indice ingresado fuera del rango. Cantidad actual de elementos en la lista: "+ this.size());}
-        else if(element==null) {throw new IllegalArgumentException("Se ha ingresado un objeto null como argumento.");} 
-        Node nn = new Node(element);
-        if(index==0){
-            this.last.next=nn;
-            this.first.back = nn;
-            nn.next = this.first;
-            nn.back = this.last;
-            this.first = nn;
-            this.size++;
-            return true;
-        }
-        Node tempNode = this.getNode(index);
-        tempNode.back.next = nn;
-        nn.back = tempNode.back;
-        nn.next = tempNode;
-        tempNode.back = nn;
-        this.size++;
-        return true;
-    }
 
     public boolean remove(Object o) {
         if(o==null){throw new IllegalArgumentException("Se ha ingresado un objeto null como argumento.");}
         else if(this.isEmpty()) {throw new IndexOutOfBoundsException("No hay elementos en la lista.");}
-        else if(this.first.content.equals(o)) {return removeFirst();}
-        else if(this.last.content.equals(o)) {return removeLast();}
+        else if(this.first.content.equals(o)) {
+            this.clear();
+            return true;
+        }
         
         Node actualNode = this.first;
         int i = 0;
@@ -119,6 +101,10 @@ public class CircularListED<E> implements Serializable {
     public boolean remove(int index) {
         if(index<0 || index>=size) {throw new IndexOutOfBoundsException("Indice ingresado fuera del rango. Cantidad actual de elementos en la lista: "+ this.size());}
         else if(this.isEmpty()) {throw new IndexOutOfBoundsException("No hay elementos en la lista.");}
+        else if(size==1 && index==0) {
+            this.clear();
+            return true;
+        }
         else if(index==0) {return removeFirst();}
         else if(index==this.size-1) {return removeLast();}
         
@@ -186,7 +172,6 @@ public class CircularListED<E> implements Serializable {
         Node temp = this.getNode(e);
         return temp.back.content;
     }
-    
     
     
     private Node getNode(int index) {

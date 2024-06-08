@@ -68,6 +68,13 @@ public class LinkedListED<E> {
         throw new NoSuchElementException("El objeto ingresado no fue encontrado en la lista.");
     }
     
+    public boolean removeLast() {
+        this.last.back.next = null;
+        this.last = this.last.back;
+        this.size--;
+        return true;
+    }
+    
     public E getNext(E e){
         if(e==null || !this.contains(e)){throw new IllegalArgumentException("Se ha ingresado un objeto null como argumento.");}
         Node temp = this.getNode(e);
@@ -104,6 +111,23 @@ public class LinkedListED<E> {
         this.size++;
         return true;
     }
+    
+    public boolean add(E e) {
+        if(e==null) {throw new IllegalArgumentException("Se ha ingresado un objeto null como argumento.");}
+        Node nn = new Node(e,this.last, null);
+        if(this.isEmpty()){
+            this.first = nn;
+            this.last = nn;
+            this.size++;
+            return true;
+        }
+       
+        this.last.next = nn;
+        this.last = nn;
+        this.size++;
+        return true;
+    }
+    
     
     public E getLast (){
         return this.last.content;

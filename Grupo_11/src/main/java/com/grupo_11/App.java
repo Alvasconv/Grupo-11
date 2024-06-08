@@ -27,7 +27,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         App.stage = stage;
-        Parent p = loadFXML("AddVehiculo");
+        Parent p = loadFXML("primary");
         scene = new Scene(p, 600, 480);
         App.stage.setScene(scene);
         App.stage.show();
@@ -37,10 +37,12 @@ public class App extends Application {
         scene.setRoot(loadFXML(fxml));
     }
 
+    //TRATEN DE NO USAR ESTO, SINO LO OTRO QUE HE USADO EN ADDVEHICULOCONTROLLER
+    //PORQUE DE LA OTRA FORMA ESTA HECHO PARA QUE SE GUARDEN EN EL HISTORIAL
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         actualFxml = fxmlLoader;
-        historial.add(fxmlLoader, fxmlLoader);
+        historial.add(fxmlLoader);
         System.out.println("Si creo");
         System.out.println("Size--> "+App.historial.size());
         return fxmlLoader.load();

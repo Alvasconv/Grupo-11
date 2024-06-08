@@ -107,12 +107,14 @@ public class AddVehiculo2Controller implements Initializable {
     private void finalizar(){
         btnFinalizar.setOnMouseClicked((MouseEvent e)->{
             creacionVehiculo();
-            FXMLLoader backloader = App.historial.getBack(App.actualFxml);
-            backloader = App.historial.getBack(backloader);
+            App.historial.removeLast();
+            App.historial.removeLast();
+            FXMLLoader backloader = App.historial.getLast();
             Parent p = backloader.getRoot();
             Scene s = p.getScene();
             App.actualFxml = backloader;
             App.stage.setScene(s);
+            vehiculoCreado.guardarVehiculo();
         });
     }
     

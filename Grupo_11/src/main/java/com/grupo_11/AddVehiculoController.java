@@ -109,23 +109,24 @@ public class AddVehiculoController implements Initializable {
     private void continuar(){
         btnContinuar.setOnAction((ActionEvent e)->{
             creacionVehiculo();
-            try { pasarVehiculo();} 
+            try { pasarInfoVehiculo();} 
             catch (IOException ex) { ex.getMessage(); }
         });
     }
     
     private void volver(){
         btnVolver.setOnAction((ActionEvent e)->{
-            FXMLLoader backLoader = App.historial.getBack(App.actualFxml);
-            try {
-                Scene s = new Scene(backLoader.load());
-                App.stage.setScene(s);
-            } catch (IOException ex) { ex.printStackTrace();}
+            App.historial.removeLast();
+            FXMLLoader backloader = App.historial.getLast();
+            Parent p = backloader.getRoot();
+            Scene s = p.getScene();
+            App.actualFxml = backloader;
+            App.stage.setScene(s);
         });
     }
     
     
-    private void pasarVehiculo() throws IOException{
+    private void pasarInfoVehiculo() throws IOException{
         FXMLLoader loader;
         Parent p;
         Scene nextScene;
@@ -177,7 +178,10 @@ public class AddVehiculoController implements Initializable {
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
+                    int ind = panelFotos.getChildren().indexOf(selectedItem);
                     panelFotos.getChildren().remove(selectedItem);
+                    clFotos.remove(ind);
+                    filesFotos.remove(ind);
                     selectedItem = null;
                 }
         });
