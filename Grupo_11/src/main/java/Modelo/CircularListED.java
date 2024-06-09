@@ -62,6 +62,10 @@ public class CircularListED<E> implements Serializable {
         if(this.isEmpty()){
             this.first = newNode;
             this.last = newNode;
+            this.first.back = this.last;
+            this.first.next = this.last;
+            this.last.back = this.first;
+            this.last.next = this.first;
             this.size++;
             return true;
         }
@@ -215,6 +219,20 @@ public class CircularListED<E> implements Serializable {
     @Override
     public String toString() {
         return "CircularListED{" + "first=" + first + ", last=" + last + ", size=" + size + '}';
+    }
+    
+    public String print() {
+        if(this.isEmpty()){ return "";}
+        String resultado="";
+        int i =1;
+        Node n = this.first;
+        resultado = resultado.concat(n.content.toString());
+        while (i<this.size){
+            n = n.next;
+            resultado = resultado.concat(";"+n.content.toString());
+            i++;
+        }
+        return resultado;
     }
     
 }

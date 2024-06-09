@@ -1,0 +1,64 @@
+
+.fondoVentana1{
+    -fx-background-color: #e8e5ec;
+}
+
+.fondoElemento1{
+    -fx-background-color: #f4f2f3;
+    -fx-border-radius: 3;
+    -fx-border-width: 0.5;
+    -fx-border-color: #656978;
+}
+
+.botones1 {
+    -fx-border-color: #e2e2e2;
+    -fx-border-radius: 4;
+    -fx-border-width: 2;
+    -fx-background-radius: 8;
+    -fx-background-color: #636a7c;
+    -fx-text-fill: #fafafa;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.botones1:hover {
+    -fx-background-color: #636a7c;
+    -fx-text-fill: #4a4a4a;
+}
+
+.botones2 {
+    -fx-border-color: #e2e2e2;
+    -fx-border-radius: 4;
+    -fx-border-width: 2;
+    -fx-background-radius: 8;
+    -fx-background-color: #eeeef0;
+    -fx-text-fill: #fafafa;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.botones2:hover {
+    -fx-background-color: #f1f1f1;
+    -fx-border-color: #656978;
+}
+
+.texto{
+    -fx-font-family: 'Constantia';
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #333333;
+}
+
+.texto1{
+    -fx-font-family: 'Constantia';
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.titulo{
+    -fx-font-family: 'Constantia';
+    -fx-font-size: 36px;
+    -fx-font-weight: bond;
+    -fx-text-fill: #333333;
+}

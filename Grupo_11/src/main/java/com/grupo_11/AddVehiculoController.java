@@ -121,6 +121,7 @@ public class AddVehiculoController implements Initializable {
             Parent p = backloader.getRoot();
             Scene s = p.getScene();
             App.actualFxml = backloader;
+            App.stage.setTitle("Catalogo de Vehiculos");
             App.stage.setScene(s);
         });
     }
@@ -143,7 +144,7 @@ public class AddVehiculoController implements Initializable {
         }
         App.actualFxml = loader;
         AddVehiculo2Controller controller = loader.getController();
-        controller.cargarVehiculo(vehiculoCreado);
+        controller.cargarVehiculo(vehiculoCreado, filesFotos);
         App.stage.setScene(nextScene);
     }
     

@@ -15,19 +15,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grupo_11.AddVehiculo2Controller">
+<BorderPane prefHeight="450.0" prefWidth="600.0" styleClass="fondoVentana1" stylesheets="@../../css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grupo_11.AddVehiculo2Controller">
    <top>
-      <Label text="Publica tu Vehiculo" BorderPane.alignment="CENTER">
+      <Label styleClass="titulo" stylesheets="@../../css/estilos.css" text="Publica tu Vehiculo" BorderPane.alignment="CENTER">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
+         <BorderPane.margin>
+            <Insets bottom="10.0" />
+         </BorderPane.margin>
       </Label>
    </top>
    <bottom>
       <HBox alignment="CENTER" prefHeight="51.0" prefWidth="650.0" spacing="150.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnVolver" mnemonicParsing="false" prefWidth="150.0" text="Volver" />
-            <Button fx:id="btnFinalizar" mnemonicParsing="false" prefWidth="150.0" text="Finalizar" />
+            <Button fx:id="btnVolver" mnemonicParsing="false" prefWidth="150.0" styleClass="botones1" stylesheets="@../../css/estilos.css" text="Volver" />
+            <Button fx:id="btnFinalizar" mnemonicParsing="false" prefWidth="150.0" styleClass="botones1" stylesheets="@../../css/estilos.css" text="Finalizar" />
          </children>
       </HBox>
    </bottom>
@@ -47,25 +50,25 @@
                <children>
                   <VBox prefHeight="60.0" prefWidth="220.0">
                      <children>
-                        <Label prefHeight="21.0" prefWidth="120.0" text="Tipo de Motor" />
+                        <Label prefHeight="21.0" prefWidth="120.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Tipo de Motor" />
                         <TextField fx:id="txtMotor" prefWidth="160.0" promptText="Motor" />
                      </children>
                   </VBox>
                   <VBox GridPane.rowIndex="1">
                      <children>
-                        <Label prefHeight="21.0" prefWidth="154.0" text="Tipo de Transmision" />
+                        <Label prefHeight="21.0" prefWidth="154.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Tipo de Transmision" />
                         <TextField fx:id="txtTransmision" prefWidth="160.0" promptText="Transmision" />
                      </children>
                   </VBox>
                   <VBox GridPane.rowIndex="2">
                      <children>
-                        <Label prefHeight="21.0" prefWidth="120.0" text="Peso (Kg)" />
+                        <Label prefHeight="21.0" prefWidth="120.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Peso (Kg)" />
                         <TextField fx:id="txtPeso" prefWidth="160.0" promptText="Peso" />
                      </children>
                   </VBox>
                   <VBox GridPane.rowIndex="3">
                      <children>
-                        <Label prefHeight="21.0" prefWidth="120.0" text="Ubicación" />
+                        <Label prefHeight="21.0" prefWidth="120.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Ubicación" />
                         <TextField fx:id="txtUbicacion" prefWidth="160.0" promptText="Ubicación" />
                      </children>
                   </VBox>
@@ -80,18 +83,18 @@
                      <children>
                         <VBox prefHeight="75.0">
                            <children>
-                              <Label prefHeight="21.0" prefWidth="278.0" text="Indique las reparaciones realizadas en" />
-                              <Label layoutX="10.0" layoutY="10.0" prefHeight="21.0" prefWidth="278.0" text="en su vehiculo" />
+                              <Label prefHeight="21.0" prefWidth="278.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Indique las reparaciones realizadas en" />
+                              <Label layoutX="10.0" layoutY="10.0" prefHeight="21.0" prefWidth="278.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="en su vehiculo" />
                               <TextField fx:id="txtReparacion" prefHeight="31.0" prefWidth="300.0" />
                            </children>
                         </VBox>
                         <VBox>
                            <children>
-                              <Button fx:id="btnAdd" mnemonicParsing="false">
+                              <Button fx:id="btnAdd" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../css/estilos.css">
                                  <graphic>
                                     <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../archivos/fotos/addIcon.png" />
+                                          <Image url="@../../archivos/iconos/addIcon.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -105,12 +108,12 @@
                   </HBox>
                   <HBox spacing="5.0">
                      <children>
-                        <ListView fx:id="listReparaciones" prefHeight="231.0" prefWidth="324.0" />
-                        <Button fx:id="btnBorrar" mnemonicParsing="false">
+                        <ListView fx:id="listReparaciones" prefHeight="231.0" prefWidth="324.0" stylesheets="@../../css/estilos.css" />
+                        <Button fx:id="btnBorrar" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../css/estilos.css">
                            <graphic>
                               <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../archivos/fotos/deleteIcon.png" />
+                                    <Image url="@../../archivos/iconos/deleteIcon.png" />
                                  </image>
                               </ImageView>
                            </graphic>

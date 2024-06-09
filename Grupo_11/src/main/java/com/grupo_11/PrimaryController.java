@@ -65,10 +65,6 @@ public class PrimaryController implements Initializable {
         modelo.setOnAction(event -> onModeloSelected());
     }
 
-    private void regresar() throws IOException {
-        App.setRoot("secondary");
-    }
-
     @FXML
     private void añadirVehiculo(ActionEvent event) throws IOException {
         FXMLLoader loader;

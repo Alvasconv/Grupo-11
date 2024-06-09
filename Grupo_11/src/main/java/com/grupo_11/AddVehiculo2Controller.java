@@ -45,6 +45,7 @@ public class AddVehiculo2Controller implements Initializable {
     
     ObservableList<String> oListR;
     ArrayListED<String>  listR = new ArrayListED<>();
+    ArrayListED<File>  listFiles;
     private Vehiculo vehiculoCreado;
     String selectedItem;
     
@@ -111,8 +112,12 @@ public class AddVehiculo2Controller implements Initializable {
             Parent p = backloader.getRoot();
             Scene s = p.getScene();
             App.actualFxml = backloader;
-            App.stage.setScene(s);
             vehiculoCreado.guardarVehiculo();
+            for(File f: listFiles){
+                saveFile(App.pathFotos,f);
+            }
+            App.stage.setScene(s);
+            App.stage.setTitle("Catalogo de Vehiculos");
         });
     }
     
@@ -133,9 +138,9 @@ public class AddVehiculo2Controller implements Initializable {
         });
     }
     
-    public void cargarVehiculo(Vehiculo v){
+    public void cargarVehiculo(Vehiculo v, ArrayListED<File> ls){
         vehiculoCreado = v;
-        System.out.println(vehiculoCreado.toString());
+        listFiles = ls;
     }
     
 }

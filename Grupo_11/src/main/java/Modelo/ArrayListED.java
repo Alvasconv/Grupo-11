@@ -26,7 +26,7 @@ public class ArrayListED<E> implements Iterable<E>, Serializable {
     }
 
     private boolean isFull() {
-        return this.effectiveSize == this.capacity;
+        return this.effectiveSize == this.capacity-1;
     }
 
     public int size() {
@@ -159,7 +159,7 @@ public class ArrayListED<E> implements Iterable<E>, Serializable {
     }
 
     private void addCapacity() {
-        E[] newList = (E[]) new Object[capacity];
+        E[] newList = (E[]) new Object[capacity*2];
         for (int i = 0; i < this.effectiveSize; i++) {
             newList[i] = elements[i];
         }
@@ -195,6 +195,16 @@ public class ArrayListED<E> implements Iterable<E>, Serializable {
         E[] array = (E[]) new Object[this.effectiveSize];
         System.arraycopy(this.elements, 0, array, 0, this.effectiveSize);
         return array;
+    }
+    
+    public String print() {
+        if(this.isEmpty()){ return "";}
+        String resultado="";
+        resultado = resultado.concat(this.elements[0].toString());
+        for(int i=1; i<this.effectiveSize;i++){
+            resultado = resultado.concat(";"+this.elements[i].toString());
+        }
+        return resultado;
     }
 
 }

@@ -7,8 +7,10 @@ package com.grupo_11;
 import Modelo.ArrayListED;
 import Modelo.CircularListED;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -52,10 +54,17 @@ public class Vehiculo implements Serializable {
     }
 
     public static void guardarListaVehiculos(ArrayListED<Vehiculo> vehiculos) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivoVehiculos))) {
-            oos.writeObject(vehiculos);
+         try (BufferedWriter writer = new BufferedWriter(new FileWriter(App.pathArchivos+"vehiculos.csv"))) {
+
+            for (Vehiculo vehiculo : vehiculos) {
+                writer.write(vehiculo.toString());
+                writer.newLine();
+            }
+
+            System.out.println("Datos escritos en el archivo CSV correctamente.");
+
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error al escribir en el archivo CSV: " + e.getMessage());
         }
     }
 
@@ -93,13 +102,14 @@ public class Vehiculo implements Serializable {
                 String ubicacion = datos[8].trim();
 
                 ArrayListED<String> reparaciones = new ArrayListED<>();
-                String[] reparacionesArray = datos[9].split(";");
+                String[] reparaciones_fotos = datos[9].split("-");
+                String[] reparacionesArray = reparaciones_fotos[0].split(";");
                 for (String reparacion : reparacionesArray) {
                     reparaciones.add(reparacion.trim());
                 }
 
                 CircularListED<String> fotos = new CircularListED<>();
-                String[] fotosArray = datos[10].split(";");
+                String[] fotosArray = reparaciones_fotos[1].split(";");
                 for (String foto : fotosArray) {
                     fotos.add(foto.trim());
                 }
@@ -212,7 +222,9 @@ public class Vehiculo implements Serializable {
 
     @Override
     public String toString() {
-        return "Vehiculo{" + "precio=" + precio + ", marca=" + marca + ", modelo=" + modelo + ", a\u00f1o=" + año + ", kilometraje=" + kilometraje + ", motor=" + motor + ", transmision=" + transmision + ", peso=" + peso + ", ubicacion=" + ubicacion + ", reparaciones=" + reparaciones + ", fotos=" + fotos + '}';
+        return precio +","+ marca +","+ modelo +","+ año +","+ kilometraje +","+ motor 
+                +","+ transmision +","+ peso +","+ ubicacion +","+ reparaciones.print() 
+                +"-"+ fotos.print();
     }
-
+    
 }
