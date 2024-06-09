@@ -90,7 +90,6 @@ public class Vehiculo implements Serializable {
             String linea;
             while ((linea = br.readLine()) != null) {
                 String[] datos = linea.split(",");
-
                 double precio = Double.parseDouble(datos[0].trim());
                 String marca = datos[1].trim();
                 String modelo = datos[2].trim();

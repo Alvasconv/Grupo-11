@@ -2,6 +2,7 @@ package com.grupo_11;
 
 import Metodos.FiltroVehiculos;
 import Modelo.ArrayListED;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
@@ -18,8 +19,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -53,7 +57,7 @@ public class PrimaryController implements Initializable {
         try {
             mostrarVehiculos(Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos));
         } catch (Exception e) {
-            System.out.println("Error catastrófico");
+            System.out.println(e);
         }
         rellenarComboBoxs(Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos));
         modelo.setDisable(true);
@@ -188,26 +192,46 @@ public class PrimaryController implements Initializable {
     }
 
     public void mostrarVehiculos(ArrayListED<Vehiculo> lst) {
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10); 
+        gridPane.setVgap(10); 
+        int numColumns = 2;
+        int row = 0;
+        int col = 0;
+
         for (Vehiculo v : lst) {
             HBox hboxVehiculo = new HBox();
             hboxVehiculo.setSpacing(10);
-            ImageView imageView = new ImageView(v.getFotos().first.getContent());
-            imageView.setFitWidth(60);
-            imageView.setFitHeight(60);
+
+            String imagePath = Vehiculo.carpetaFotos + v.getFotos().first.getContent();
+            File imageFile = new File(imagePath);
+
+            ImageView imageView = new ImageView(new Image(imageFile.toURI().toString()));
+            imageView.setFitWidth(100); 
+            imageView.setFitHeight(100); 
+
             VBox vboxDatos = new VBox();
             vboxDatos.setSpacing(5);
-//
-            vboxDatos.getChildren().addAll(
-                    new Label("Marca: " + v.getMarca()),
-                    new Label("Año: " + v.getAño()),
-                    new Label("Kilometraje: " + v.getKilometraje())
-            //                new Label(v.getFotos().first.toString())
-            );
-//
-            hboxVehiculo.getChildren().addAll(imageView, vboxDatos);
-            lstvehiculos.getChildren().add(hboxVehiculo);
-        }
 
+            vboxDatos.getChildren().addAll(
+                new Label(v.getMarca()), 
+                new Label(v.getKilometraje() + " km - " + v.getAño()), 
+                new Label(v.getUbicacion()) 
+            );
+
+            hboxVehiculo.getChildren().addAll(imageView, vboxDatos);
+            gridPane.add(hboxVehiculo, col, row);
+            col++;
+            if (col >= numColumns) {
+                col = 0;
+                row++;
+            }
+        }
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(gridPane);
+        scrollPane.setFitToWidth(false); 
+        lstvehiculos.getChildren().clear(); 
+        lstvehiculos.getChildren().add(scrollPane); 
     }
 
 //    @FXML
