@@ -3,7 +3,7 @@ package Modelo;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.io.Serializable;
-
+import java.util.Collection;
 
 /**
  *
@@ -172,5 +172,29 @@ public class ArrayListED<E> implements Iterable<E>, Serializable {
     public String toString() {
         return "ArrayListED{" + "capacity=" + capacity + ", effectiveSize=" + effectiveSize + ", elements=" + elements + '}';
     }
-    
+
+    public boolean addAll(Collection<? extends E> c) {
+        if (c == null) {
+            throw new IllegalArgumentException("La colección ingresada es null.");
+        }
+        for (E e : c) {
+            if (e == null) {
+                throw new IllegalArgumentException("La colección contiene un elemento null.");
+            }
+        }
+        while (this.effectiveSize + c.size() > this.capacity) {
+            this.addCapacity();
+        }
+        for (E e : c) {
+            this.elements[effectiveSize++] = e;
+        }
+        return true;
+    }
+
+    public E[] toArray() {
+        E[] array = (E[]) new Object[this.effectiveSize];
+        System.arraycopy(this.elements, 0, array, 0, this.effectiveSize);
+        return array;
+    }
+
 }

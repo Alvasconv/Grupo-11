@@ -68,7 +68,6 @@ public class AñadirVController implements Initializable {
     @FXML
     private void ingresar(ActionEvent event) throws IOException {
         System.out.println(fotosTemp);
-
         fotos=fotosTemp;
         Vehiculo v= new Vehiculo((Integer.parseInt(precio.getText())),marca.getText(),modelo.getText(),Integer.parseInt(año.getText()),Integer.parseInt(kilometraje.getText()),motor.getText(),transmision.getText(),Integer.parseInt(peso.getText()),ubicacion.getText(), reparaciones, fotos );
         v.guardarVehiculo();

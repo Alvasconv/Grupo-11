@@ -6,14 +6,12 @@ package com.grupo_11;
 
 import Modelo.ArrayListED;
 import Modelo.CircularListED;
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  *
@@ -21,22 +19,22 @@ import java.util.ArrayList;
  */
 public class Vehiculo implements Serializable {
 
-    private int precio;
+    private double precio;
     private String marca;
     private String modelo;
     private int año;
-    private int kilometraje;
+    private double kilometraje;
     private String motor;
     private String transmision;
-    private int peso;
+    private double peso;
     private String ubicacion;
     private ArrayListED<String> reparaciones;
     private CircularListED<String> fotos;
-    public static String archivoVehiculos= "src/main/resources/archivos/vehiculos.ser";
+    public static String archivoVehiculos = "src/main/resources/archivos/vehiculos.csv";
     public static String carpetaReparaciones = "src/main/resources/archivos/reparaciones/";
     public static String carpetaFotos = "src/main/resources/archivos/fotos/";
 
-    public Vehiculo(int precio, String marca, String modelo, int año, int kilometraje, String motor, String transmision, int peso, String ubicacion, ArrayListED<String> reparaciones, CircularListED<String> fotos) {
+    public Vehiculo(double precio, String marca, String modelo, int año, double kilometraje, String motor, String transmision, double peso, String ubicacion, ArrayListED<String> reparaciones, CircularListED<String> fotos) {
         this.precio = precio;
         this.marca = marca;
         this.modelo = modelo;
@@ -49,8 +47,9 @@ public class Vehiculo implements Serializable {
         this.reparaciones = reparaciones;
         this.fotos = fotos;
     }
-    
-    public Vehiculo(){ }
+
+    public Vehiculo() {
+    }
 
     public static void guardarListaVehiculos(ArrayListED<Vehiculo> vehiculos) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivoVehiculos))) {
@@ -61,32 +60,69 @@ public class Vehiculo implements Serializable {
     }
 
     public void guardarVehiculo() {
-        ArrayListED<Vehiculo> vehiculos = leerListaVehiculos();
+        ArrayListED<Vehiculo> vehiculos = leerListaVehiculos(archivoVehiculos);
         vehiculos.add(this);
         guardarListaVehiculos(vehiculos);
     }
 
-    public static ArrayListED<Vehiculo> leerListaVehiculos() {
+//    public static ArrayListED<Vehiculo> leerListaVehiculos() {
+//        ArrayListED<Vehiculo> vehiculos = new ArrayListED<>();
+//        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivoVehiculos))) {
+//            vehiculos = (ArrayListED<Vehiculo>) ois.readObject();
+//        } catch (IOException | ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return vehiculos;
+//    }
+    public static ArrayListED<Vehiculo> leerListaVehiculos(String archivoCSV) {
         ArrayListED<Vehiculo> vehiculos = new ArrayListED<>();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivoVehiculos))) {
-            vehiculos = (ArrayListED<Vehiculo>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivoCSV))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(",");
+
+                double precio = Double.parseDouble(datos[0].trim());
+                String marca = datos[1].trim();
+                String modelo = datos[2].trim();
+                int año = Integer.parseInt(datos[3].trim());
+                double kilometraje = Double.parseDouble(datos[4].trim());
+                String motor = datos[5].trim();
+                String transmision = datos[6].trim();
+                double peso = Double.parseDouble(datos[7].trim());
+                String ubicacion = datos[8].trim();
+
+                ArrayListED<String> reparaciones = new ArrayListED<>();
+                String[] reparacionesArray = datos[9].split(";");
+                for (String reparacion : reparacionesArray) {
+                    reparaciones.add(reparacion.trim());
+                }
+
+                CircularListED<String> fotos = new CircularListED<>();
+                String[] fotosArray = datos[10].split(";");
+                for (String foto : fotosArray) {
+                    fotos.add(foto.trim());
+                }
+
+                Vehiculo vehiculo = new Vehiculo(precio, marca, modelo, año, kilometraje, motor, transmision, peso, ubicacion, reparaciones, fotos);
+                vehiculos.add(vehiculo);
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
         return vehiculos;
     }
-
 
     public void addFoto(String foto) {
         this.fotos.add(foto);
     }
 
-    
-    public void leerFotos(){
-    
+    public void leerFotos() {
+
     }
 
-    public int getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
@@ -178,7 +214,5 @@ public class Vehiculo implements Serializable {
     public String toString() {
         return "Vehiculo{" + "precio=" + precio + ", marca=" + marca + ", modelo=" + modelo + ", a\u00f1o=" + año + ", kilometraje=" + kilometraje + ", motor=" + motor + ", transmision=" + transmision + ", peso=" + peso + ", ubicacion=" + ubicacion + ", reparaciones=" + reparaciones + ", fotos=" + fotos + '}';
     }
-    
-    
 
 }
