@@ -8,8 +8,12 @@ import Modelo.ArrayListED;
 import Modelo.CircularListED;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -24,7 +28,9 @@ import javafx.scene.layout.VBox;
  */
 public class DetallesVehiculoController implements Initializable {
 
-    @FXML Button btnCerrar;
+    @FXML Button btnVolver;
+    @FXML Button btnBorrar;
+    @FXML Button btnEditar;
     @FXML Button btnCambiarIzq;
     @FXML Button btnCambiarDer;
     @FXML ImageView ftEstelar;
@@ -53,52 +59,29 @@ public class DetallesVehiculoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        CircularListED<String> cl = new CircularListED<>();
-        cl.add("addIcon.png");
-        cl.add("deleteIcon.png");
-        cl.add("cerrarIcon.png");
-        cl.add("icono.png");
-        ArrayListED<String> ls = new ArrayListED<>();
-        ls.add("focos dañados");
-        ls.add("motor generico");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
-        ls.add("discos cambiados");
- 
-        vehiculo = new Vehiculo(2000,"Audi","gtr",100,100,"v8","6 cilindros",200,"Guayaquil",ls,cl);
-         for(int c=0; c<vehiculo.getFotos().size(); c++){
-            System.out.println("Foto Anterior ind: "+c+" --> "+vehiculo.getFotos().get(c));
-        }
-        
-        String u =vehiculo.getFotos().get(0);
-        for(int c=0; c<10; c++){
-            System.out.println("Foto U "+App.pathFotos+ u);
-            System.out.println("Foto Anterior ind: "+c+" --> "+vehiculo.getFotos().getBack(u));
-            System.out.println("Foto Siguiente ind: "+c+" --> "+vehiculo.getFotos().getNext(u));
-            u = vehiculo.getFotos().getNext(u);
-        }
-
-        mostrarInfo();
         cambiarFotoAnt();
         cambiarFotoSig();
+        volver();
     }
     
     public void cargarVehiculo(Vehiculo v){
         vehiculo = v;
+        System.out.println(v.getFotos().size());
+        cargarFotos();
+        titulo.setText(vehiculo.getMarca()+" "+vehiculo.getModelo()+" - "+ vehiculo.getPrecio());
+        precio.setText(String.valueOf(vehiculo.getPrecio()));
+        marca.setText(vehiculo.getMarca());
+        modelo.setText(vehiculo.getModelo());
+        anio.setText(String.valueOf(vehiculo.getAño()));
+        ubicacion.setText(vehiculo.getUbicacion());
+        kilometraje.setText(String.valueOf(vehiculo.getKilometraje()));
+        peso.setText(String.valueOf(vehiculo.getPeso()));
+        motor.setText(vehiculo.getMotor());
+        transmision.setText(vehiculo.getTransmision());
+        cargarListaReparaciones();
     }
     
-    public void cambiarFotoSig(){
+    private void cambiarFotoSig(){
         btnCambiarDer.setOnAction(e->{
             String[] urlActual1 = ftActual.getImage().getUrl().split("/");
             String actual1 = urlActual1[urlActual1.length-1];
@@ -111,7 +94,7 @@ public class DetallesVehiculoController implements Initializable {
             setImage(ftSiguiente,vehiculo.getFotos().getNext(actual2),80);
         });
     }
-    public void cambiarFotoAnt(){
+    private void cambiarFotoAnt(){
         btnCambiarIzq.setOnAction(e->{
             String[] urlActual1 = ftActual.getImage().getUrl().split("/");
             String actual1 = urlActual1[urlActual1.length-1];
@@ -125,27 +108,12 @@ public class DetallesVehiculoController implements Initializable {
         });
     }
     
-    private void mostrarInfo(){
-        titulo.setText(vehiculo.getMarca()+" "+vehiculo.getModelo()+" - "+ vehiculo.getPrecio());
-        cargarFotos();
-        precio.setText(String.valueOf(vehiculo.getPrecio()));
-        marca.setText(vehiculo.getMarca());
-        modelo.setText(vehiculo.getModelo());
-        anio.setText(String.valueOf(vehiculo.getAño()));
-        ubicacion.setText(vehiculo.getUbicacion());
-        kilometraje.setText(String.valueOf(vehiculo.getKilometraje()));
-        peso.setText(String.valueOf(vehiculo.getPeso()));
-        motor.setText(vehiculo.getMotor());
-        transmision.setText(vehiculo.getTransmision());
-        cargarListaReparaciones();
-    }
-    
     private void cargarListaReparaciones(){
         for(String s: vehiculo.getReparaciones() ){
             Label valor = new Label(s);
             valor.getStyleClass().add("texto");
             HBox hb = new HBox();
-            ImageView imv = new ImageView(App.loadImage(App.pathFotos+"viñeta.png"));
+            ImageView imv = new ImageView(App.loadImage(App.pathIconos+"viñeta.png"));
             imv.setFitWidth(18);
             imv.setPreserveRatio(true);
             hb.getChildren().add(imv);
@@ -163,10 +131,22 @@ public class DetallesVehiculoController implements Initializable {
     }
     
     private void setImage(ImageView imv, String foto, int ancho){
-        imv.setImage(App.loadImage(App.pathIconos+foto));
+        imv.setImage(App.loadImage(App.pathFotos+foto));
         imv.setPreserveRatio(true);
         imv.setFitWidth(ancho);
     
+    }
+    
+    private void volver() {
+        btnVolver.setOnAction((ActionEvent e) -> {
+            App.historial.removeLast();
+            FXMLLoader backloader = App.historial.getLast();
+            Parent p = backloader.getRoot();
+            Scene s = p.getScene();
+            App.actualFxml = backloader;
+            App.stage.setTitle("Catalogo de Vehiculos");
+            App.stage.setScene(s);
+        });
     }
 
     

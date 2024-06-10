@@ -23,6 +23,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -50,7 +51,6 @@ public class PrimaryController implements Initializable {
     @FXML
     private TextField kilometrajeMin;
 
-    private Vehiculo vSeleccionado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -220,6 +220,16 @@ public class PrimaryController implements Initializable {
             );
 
             hboxVehiculo.getChildren().addAll(imageView, vboxDatos);
+            
+            //Asigna la accion de cambiar a la ventana Detalles
+            hboxVehiculo.setOnMouseClicked((MouseEvent e)-> {
+                try{
+                    pasarInfoVehiculo(v);
+                }catch(IOException ex){ 
+                    System.out.println("NO se cargo la pagina detalles");
+                    ex.printStackTrace();
+                }
+            });
             gridPane.add(hboxVehiculo, col, row);
             col++;
             if (col >= numColumns) {
@@ -231,7 +241,8 @@ public class PrimaryController implements Initializable {
         scrollPane.setContent(gridPane);
         scrollPane.setFitToWidth(false); 
         lstvehiculos.getChildren().clear(); 
-        lstvehiculos.getChildren().add(scrollPane); 
+        lstvehiculos.getChildren().add(scrollPane);
+        actualizarDatos();
     }
 
     private void actualizarDatos() {
@@ -242,26 +253,26 @@ public class PrimaryController implements Initializable {
         }
     }
 
-    //ESTO SIRVE PARA PASAR EL VEHICULO SELECCIONADO A LA VENTANA DETALLES VEHICULO
-    // REMPLAZA EL CODIGO ACTUAL QUE ESTA EN EL METODO AÑADIRVEHICULO()
-//    private void pasarInfoVehiculo() throws IOException{
-//        FXMLLoader loader;
-//        Parent p;
-//        Scene nextScene;
-//        if(App.historial.hasNext(App.actualFxml)){
-//            loader = App.historial.getNext(App.actualFxml);
-//            p = loader.getRoot();
-//            nextScene = p.getScene();
-//        }else{
-//            loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("DetallesVehiculo.fxml"));
-//            App.historial.add(loader, App.actualFxml);
-//            p = loader.load();
-//            nextScene = new Scene(p);
-//        }
-//        App.actualFxml = loader;
-//        DetallesVehiculoController controller = loader.getController();
-//        controller.cargarVehiculo(vSeleccionado);
-//        App.stage.setScene(nextScene);
-//    }
+
+    private void pasarInfoVehiculo(Vehiculo v) throws IOException{
+        FXMLLoader loader;
+        Parent p;
+        Scene nextScene;
+        if(App.historial.hasNext(App.actualFxml)){
+            loader = App.historial.getNext(App.actualFxml);
+            p = loader.getRoot();
+            nextScene = p.getScene();
+        }else{
+            loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("DetallesVehiculo.fxml"));
+            App.historial.add(loader, App.actualFxml);
+            p = loader.load();
+            nextScene = new Scene(p);
+        }
+        App.actualFxml = loader;
+        DetallesVehiculoController controller = loader.getController();
+        controller.cargarVehiculo(v);
+        App.stage.setTitle("Detalles del Vehiculo");
+        App.stage.setScene(nextScene);
+    }
 }

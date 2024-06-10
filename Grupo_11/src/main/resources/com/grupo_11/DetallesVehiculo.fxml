@@ -10,243 +10,278 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="650.0" styleClass="fondoVentana1" stylesheets="@../../css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grupo_11.DetallesVehiculoController">
-   <top>
-      <BorderPane prefHeight="63.0">
-         <left>
-            <Label fx:id="titulo" alignment="TOP_LEFT" styleClass="titulo" stylesheets="@../../css/estilos.css" text="MARCA - MODELO VEHICULO" textOverrun="CENTER_ELLIPSIS" BorderPane.alignment="CENTER" />
-         </left>
-         <right>
-            <Button fx:id="btnCerrar" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../css/estilos.css" BorderPane.alignment="CENTER">
-               <graphic>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../archivos/iconos/cerrarIcon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </right>
-      </BorderPane>
-   </top>
-   <center>
-      <BorderPane BorderPane.alignment="CENTER">
-         <center>
-            <HBox alignment="CENTER" prefHeight="317.0" prefWidth="325.0" spacing="5.0" styleClass="fondoElemento1" stylesheets="@../../css/estilos.css" BorderPane.alignment="CENTER">
-               <children>
-                  <ImageView fx:id="ftEstelar" fitHeight="300.0" fitWidth="319.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-               <BorderPane.margin>
-                  <Insets bottom="5.0" />
-               </BorderPane.margin>
-            </HBox>
-         </center>
-         <bottom>
-            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="btnCambiarIzq" mnemonicParsing="false" prefHeight="30.0" prefWidth="15.0" styleClass="botones2" stylesheets="@../../css/estilos.css">
-                     <graphic>
-                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../archivos/iconos/flechaAtrascon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <HBox alignment="CENTER" prefHeight="50.0" spacing="5.0" styleClass="fondoElemento1" stylesheets="@../../css/estilos.css">
+<HBox styleClass="fondoVentana1" stylesheets="@../../css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grupo_11.DetallesVehiculoController">
+   <children>
+      <Button fx:id="btnVolver" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../../../../../../../Grupo-11/Grupo_11/src/main/resources/css/estilos.css">
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../archivos/iconos/backIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <HBox.margin>
+            <Insets left="5.0" />
+         </HBox.margin>
+      </Button>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="650.0">
+         <top>
+            <BorderPane>
+               <left>
+                  <HBox BorderPane.alignment="CENTER">
                      <children>
-                        <ImageView fx:id="ftAnterior" fitHeight="60.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="ftActual" fitHeight="60.0" fitWidth="80.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="ftSiguiente" fitHeight="60.0" fitWidth="80.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="titulo" alignment="TOP_LEFT" styleClass="titulo" stylesheets="@../../../../../../../../Grupo-11/Grupo_11/src/main/resources/css/estilos.css" text="MARCA - MODELO" textOverrun="CENTER_ELLIPSIS" />
                      </children>
                   </HBox>
-                  <Button fx:id="btnCambiarDer" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../css/estilos.css">
-                     <graphic>
-                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../archivos/iconos/flechaAdelanteIcon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
-            </HBox>
-         </bottom>
-         <padding>
-            <Insets right="5.0" />
-         </padding>
-      </BorderPane>
-   </center>
-   <right>
-      <ScrollPane hbarPolicy="NEVER" prefHeight="407.0" prefWidth="260.0" styleClass="fondoElemento1" stylesheets="@../../css/estilos.css" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
-         <content>
-            <VBox prefHeight="360.0" spacing="15.0">
-               <children>
-                  <VBox>
+               </left>
+               <right>
+                  <HBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
                      <children>
-                        <Label prefHeight="21.0" styleClass="texto1" stylesheets="@../../css/estilos.css" text="Ficha Técnica">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <Button fx:id="btnEditar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../../../../../../../Grupo-11/Grupo_11/src/main/resources/css/estilos.css">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../archivos/iconos/editarIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="btnBorrar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../../../../../../../Grupo-11/Grupo_11/src/main/resources/css/estilos.css">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../archivos/iconos/deleteIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </right>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </BorderPane>
+         </top>
+         <center>
+            <BorderPane BorderPane.alignment="CENTER">
+               <center>
+                  <HBox alignment="CENTER" prefHeight="317.0" prefWidth="325.0" spacing="5.0" styleClass="fondoElemento1" stylesheets="@../../css/estilos.css" BorderPane.alignment="CENTER">
+                     <children>
+                        <ImageView fx:id="ftEstelar" fitHeight="300.0" fitWidth="319.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets bottom="5.0" />
+                     </BorderPane.margin>
+                  </HBox>
+               </center>
+               <bottom>
+                  <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="btnCambiarIzq" mnemonicParsing="false" prefHeight="30.0" prefWidth="15.0" styleClass="botones2" stylesheets="@../../css/estilos.css">
+                           <graphic>
+                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../archivos/iconos/flechaAtrasIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <HBox alignment="CENTER" prefHeight="50.0" spacing="5.0" styleClass="fondoElemento1" stylesheets="@../../css/estilos.css">
+                           <children>
+                              <ImageView fx:id="ftAnterior" fitHeight="60.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="ftActual" fitHeight="60.0" fitWidth="80.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="ftSiguiente" fitHeight="60.0" fitWidth="80.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <Button fx:id="btnCambiarDer" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../css/estilos.css">
+                           <graphic>
+                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../archivos/iconos/flechaAdelanteIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </bottom>
+               <padding>
+                  <Insets right="5.0" />
+               </padding>
+            </BorderPane>
+         </center>
+         <right>
+            <ScrollPane hbarPolicy="NEVER" prefHeight="407.0" prefWidth="260.0" styleClass="fondoElemento1" stylesheets="@../../css/estilos.css" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
+               <content>
+                  <VBox prefHeight="360.0" spacing="15.0">
+                     <children>
                         <VBox>
                            <children>
-                              <HBox>
+                              <Label prefHeight="21.0" styleClass="texto1" stylesheets="@../../css/estilos.css" text="Ficha Técnica">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <VBox>
                                  <children>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../archivos/fotos/viñeta.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="precio" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
-                                       <graphic>
-                                          <Label prefHeight="19.0" text="Precio: " />
-                                       </graphic>
-                                    </Label>
+                                    <HBox>
+                                       <children>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../archivos/iconos/viñeta.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label fx:id="precio" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
+                                             <graphic>
+                                                <Label prefHeight="19.0" text="Precio: " />
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../archivos/iconos/viñeta.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label fx:id="marca" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
+                                             <graphic>
+                                                <Label prefHeight="19.0" text="Marca: " />
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../archivos/iconos/viñeta.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label fx:id="modelo" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
+                                             <graphic>
+                                                <Label prefHeight="19.0" text="Modelo: " />
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../archivos/iconos/viñeta.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label fx:id="ubicacion" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
+                                             <graphic>
+                                                <Label prefHeight="19.0" text="Ubicación: " />
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../archivos/iconos/viñeta.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label fx:id="anio" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
+                                             <graphic>
+                                                <Label prefHeight="19.0" text="Año: " />
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../archivos/iconos/viñeta.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label fx:id="kilometraje" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
+                                             <graphic>
+                                                <Label prefHeight="19.0" text="Kilometraje(Km): " />
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../archivos/iconos/viñeta.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label fx:id="motor" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
+                                             <graphic>
+                                                <Label prefHeight="19.0" text="Motor: " />
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../archivos/iconos/viñeta.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label fx:id="transmision" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
+                                             <graphic>
+                                                <Label prefHeight="19.0" text="Transmisión: " />
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../archivos/iconos/viñeta.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label fx:id="peso" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
+                                             <graphic>
+                                                <Label prefHeight="19.0" text="Peso: " />
+                                             </graphic>
+                                          </Label>
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../archivos/fotos/viñeta.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="marca" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
-                                       <graphic>
-                                          <Label prefHeight="19.0" text="Marca: " />
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../archivos/fotos/viñeta.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="modelo" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
-                                       <graphic>
-                                          <Label prefHeight="19.0" text="Modelo: " />
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../archivos/fotos/viñeta.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="ubicacion" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
-                                       <graphic>
-                                          <Label prefHeight="19.0" text="Ubicación: " />
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../archivos/fotos/viñeta.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="anio" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
-                                       <graphic>
-                                          <Label prefHeight="19.0" text="Año: " />
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../archivos/fotos/viñeta.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="kilometraje" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
-                                       <graphic>
-                                          <Label prefHeight="19.0" text="Kilometraje(Km): " />
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../archivos/fotos/viñeta.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="motor" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
-                                       <graphic>
-                                          <Label prefHeight="19.0" text="Motor: " />
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../archivos/fotos/viñeta.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="transmision" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
-                                       <graphic>
-                                          <Label prefHeight="19.0" text="Transmisión: " />
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox>
-                                 <children>
-                                    <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../archivos/fotos/viñeta.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label fx:id="peso" prefHeight="21.0" styleClass="texto" stylesheets="@../../css/estilos.css" text="Valor">
-                                       <graphic>
-                                          <Label prefHeight="19.0" text="Peso: " />
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </HBox>
+                                 <VBox.margin>
+                                    <Insets left="10.0" />
+                                 </VBox.margin>
+                              </VBox>
                            </children>
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <Label styleClass="texto1" stylesheets="@../../css/estilos.css" text="Lista de reparaciones" />
+                              <VBox fx:id="panelInfo" prefHeight="200.0" prefWidth="100.0">
+                                 <VBox.margin>
+                                    <Insets left="10.0" />
+                                 </VBox.margin>
+                              </VBox>
+                           </children>
                         </VBox>
                      </children>
                   </VBox>
-                  <VBox>
-                     <children>
-                        <Label prefHeight="21.0" styleClass="texto1" stylesheets="@../../css/estilos.css" text="Lista de reparaciones">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <VBox fx:id="panelInfo" prefHeight="200.0" prefWidth="100.0">
-                           <VBox.margin>
-                              <Insets left="10.0" />
-                           </VBox.margin>
-                        </VBox>
-                     </children>
-                  </VBox>
-               </children>
-            </VBox>
-         </content>
-         <BorderPane.margin>
-            <Insets left="5.0" />
-         </BorderPane.margin>
-      </ScrollPane>
-   </right>
+               </content>
+               <BorderPane.margin>
+                  <Insets left="5.0" />
+               </BorderPane.margin>
+            </ScrollPane>
+         </right>
+         <padding>
+            <Insets bottom="10.0" left="5.0" right="20.0" />
+         </padding>
+      </BorderPane>
+   </children>
    <padding>
-      <Insets bottom="10.0" left="20.0" right="20.0" />
+      <Insets bottom="2.0" left="2.0" right="2.0" top="10.0" />
    </padding>
-</BorderPane>
+</HBox>

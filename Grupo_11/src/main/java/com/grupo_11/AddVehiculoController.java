@@ -186,16 +186,6 @@ public class AddVehiculoController implements Initializable {
         });
     }
 
-//    private void continuar() {
-//        btnContinuar.setOnAction((ActionEvent e) -> {
-//            creacionVehiculo();
-//            try {
-//                pasarInfoVehiculo();
-//            } catch (IOException ex) {
-//                ex.getMessage();
-//            }
-//        });
-//    }
     private void volver() {
         btnVolver.setOnAction((ActionEvent e) -> {
             App.historial.removeLast();

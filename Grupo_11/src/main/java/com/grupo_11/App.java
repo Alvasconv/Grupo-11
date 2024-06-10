@@ -31,7 +31,7 @@ public class App extends Application {
         actualFxml = fxmlLoader;
         historial.add(fxmlLoader);
         Parent p = fxmlLoader.load();
-        scene = new Scene(p, 650, 480);
+        scene = new Scene(p, 700, 500);
         App.stage.setScene(scene);
         stage.getIcons().add(App.loadImage(pathIconos+"icono.png"));
         stage.setTitle("Catalogo de Vehiculos");
