@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.UUID;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -86,12 +87,19 @@ public class AddVehiculo2Controller implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 selectedItem = newValue;
-                System.out.println("Selected item: " + selectedItem); // Mensaje de depuración
+                System.out.println("Selected item: " + selectedItem);
             }
         });
         borrarDeLista();
     }
+    
+    
+    public void cargarVehiculo(Vehiculo v, ArrayListED<File> ls) {
+        vehiculoCreado = v;
+        listFiles = ls;
+    }
 
+    
     private void addReparaciones() {
         btnAdd.setOnAction((e) -> {
             if (!txtReparacion.getText().isEmpty()) {
@@ -100,6 +108,9 @@ public class AddVehiculo2Controller implements Initializable {
                 listReparaciones.setItems(oListR);
                 txtReparacion.clear();
             }
+            System.out.println("Lista Reparaciones "+ listR.size()+" -> "+ listR.print());
+            System.out.println("ObsList Reparaciones "+ oListR.size()+" -> ");
+            oListR.forEach((x)-> System.out.println(x));
         });
     }
 
@@ -134,23 +145,7 @@ public class AddVehiculo2Controller implements Initializable {
         }
     }
 
-    private void saveFile(String path, File archivo) {
-        File destFile = new File(path, archivo.getName());
-
-        try (FileInputStream fis = new FileInputStream(archivo); FileOutputStream fos = new FileOutputStream(destFile)) {
-
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = fis.read(buffer)) > 0) {
-                fos.write(buffer, 0, length);
-            }
-
-            System.out.println("Archivo guardado en: " + destFile.getAbsolutePath());
-        } catch (IOException e) {
-            e.getMessage();
-        }
-    }
-
+    
     private void finalizar() {
         btnFinalizar.setOnMouseClicked((MouseEvent e) -> {
             if (txtMotor.getText().isEmpty() || txtTransmision.getText().isEmpty() || txtPeso.getText().isEmpty()
@@ -167,21 +162,27 @@ public class AddVehiculo2Controller implements Initializable {
             FXMLLoader backloader = App.historial.getLast();
             Parent p = backloader.getRoot();
             Scene s = p.getScene();
-            App.actualFxml = backloader;
+            App.actualFxml = backloader;           
             vehiculoCreado.guardarVehiculo();
-            for (File f : listFiles) {
-                saveFile(App.pathFotos, f);
-            }
-            App.stage.setScene(s);
+            guardarFotos(listFiles);
+            
+            PrimaryController controller = backloader.getController();
+            controller.mostrarVehiculos(Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos));
             App.stage.setTitle("Catalogo de Vehiculos");
+
 //            ArrayListED<Vehiculo> listaVehiculos = Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos);
 //            primary.mostrarVehiculos(listaVehiculos);
+
+            App.stage.setScene(s);
+
         });
 
     }
 
     private void borrarDeLista() {
         btnBorrar.setOnMouseClicked((MouseEvent e) -> {
+            if(selectedItem==null) {return;}
+            listR.remove(selectedItem);
             oListR.remove(selectedItem);
             listReparaciones.setItems(oListR);
         });
@@ -197,9 +198,30 @@ public class AddVehiculo2Controller implements Initializable {
         });
     }
 
-    public void cargarVehiculo(Vehiculo v, ArrayListED<File> ls) {
-        vehiculoCreado = v;
-        listFiles = ls;
+
+    private void guardarFotos(ArrayListED<File> files){
+        String uniqueID = UUID.randomUUID().toString();
+        for (File f : files) {
+                saveFile(App.pathFotos, f, uniqueID.substring(0, 7));
+            }
+    }
+    
+    
+    private void saveFile(String path, File archivo, String nombre) {
+        File destFile = new File(path, nombre+archivo.getName());
+
+        try (FileInputStream fis = new FileInputStream(archivo); FileOutputStream fos = new FileOutputStream(destFile)) {
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+
+            System.out.println("Archivo guardado en: " + destFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.getMessage();
+        }
     }
 
 }
