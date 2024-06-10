@@ -8,11 +8,9 @@ import Modelo.ArrayListED;
 import Modelo.CircularListED;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
@@ -74,15 +72,7 @@ public class Vehiculo implements Serializable {
         guardarListaVehiculos(vehiculos);
     }
 
-//    public static ArrayListED<Vehiculo> leerListaVehiculos() {
-//        ArrayListED<Vehiculo> vehiculos = new ArrayListED<>();
-//        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivoVehiculos))) {
-//            vehiculos = (ArrayListED<Vehiculo>) ois.readObject();
-//        } catch (IOException | ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        return vehiculos;
-//    }
+
     public static ArrayListED<Vehiculo> leerListaVehiculos(String archivoCSV) {
         ArrayListED<Vehiculo> vehiculos = new ArrayListED<>();
 
@@ -135,7 +125,7 @@ public class Vehiculo implements Serializable {
         return precio;
     }
 
-    public void setPrecio(int precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 
@@ -167,7 +157,7 @@ public class Vehiculo implements Serializable {
         return kilometraje;
     }
 
-    public void setKilometraje(int kilometraje) {
+    public void setKilometraje(double kilometraje) {
         this.kilometraje = kilometraje;
     }
 
@@ -191,7 +181,7 @@ public class Vehiculo implements Serializable {
         return peso;
     }
 
-    public void setPeso(int peso) {
+    public void setPeso(double peso) {
         this.peso = peso;
     }
 

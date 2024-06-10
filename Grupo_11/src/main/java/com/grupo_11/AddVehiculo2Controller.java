@@ -20,7 +20,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -32,25 +35,38 @@ import javafx.scene.input.MouseEvent;
  */
 public class AddVehiculo2Controller implements Initializable {
 
-    @FXML private Button btnFinalizar;
-    @FXML private Button btnVolver;
-    @FXML private Button btnAdd;
-    @FXML private Button btnBorrar;
-    @FXML private TextField txtMotor;
-    @FXML private TextField txtUbicacion;
-    @FXML private TextField txtTransmision;
-    @FXML private TextField txtPeso;
-    @FXML private TextField txtReparacion;
-    @FXML private ListView listReparaciones;
-    
+    @FXML
+    private Button btnFinalizar;
+    @FXML
+    private Button btnVolver;
+    @FXML
+    private Button btnAdd;
+    @FXML
+    private Button btnBorrar;
+    @FXML
+    private TextField txtMotor;
+    @FXML
+    private TextField txtUbicacion;
+    @FXML
+    private TextField txtTransmision;
+    @FXML
+    private TextField txtPeso;
+    @FXML
+    private TextField txtReparacion;
+    @FXML
+    private ListView listReparaciones;
+    @FXML
+    private Label info2;
+
     ObservableList<String> oListR;
-    ArrayListED<String>  listR = new ArrayListED<>();
-    ArrayListED<File>  listFiles;
+    ArrayListED<String> listR = new ArrayListED<>();
+    ArrayListED<File> listFiles;
     private Vehiculo vehiculoCreado;
     String selectedItem;
-    
+
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -60,7 +76,7 @@ public class AddVehiculo2Controller implements Initializable {
         addReparaciones();
         volver();
         finalizar();
-         listReparaciones.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        listReparaciones.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 selectedItem = newValue;
@@ -69,10 +85,10 @@ public class AddVehiculo2Controller implements Initializable {
         });
         borrarDeLista();
     }
-    
-    private void addReparaciones(){
-        btnAdd.setOnAction((e)->{
-            if(!txtReparacion.getText().isEmpty()){
+
+    private void addReparaciones() {
+        btnAdd.setOnAction((e) -> {
+            if (!txtReparacion.getText().isEmpty()) {
                 oListR.add(txtReparacion.getText());
                 listR.add(txtReparacion.getText());
                 listReparaciones.setItems(oListR);
@@ -80,32 +96,66 @@ public class AddVehiculo2Controller implements Initializable {
             }
         });
     }
-    
-    private void creacionVehiculo(){
+
+    private boolean creacionVehiculo() {
         vehiculoCreado.setTransmision(txtTransmision.getText());
         vehiculoCreado.setUbicacion(txtUbicacion.getText());
         vehiculoCreado.setMotor(txtMotor.getText());
         vehiculoCreado.setReparaciones(listR);
-        vehiculoCreado.setPeso(Integer.parseInt(txtPeso.getText()));
+
+        try {
+            double peso = Double.parseDouble(txtPeso.getText().trim());
+            if (peso <= 0) {
+                throw new IllegalArgumentException("Por favor, ingresa un peso válido.");
+            }
+            vehiculoCreado.setPeso(peso);
+
+            return true; 
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error de formato");
+            alert.setContentText("Por favor, ingresa un número válido en el campo de peso.");
+            alert.showAndWait();
+            return false; 
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error de entrada");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return false; 
+        }
     }
-    
-    private void saveFile(String path,File archivo){
+
+    private void saveFile(String path, File archivo) {
         File destFile = new File(path, archivo.getName());
-        
-        try (FileInputStream fis = new FileInputStream(archivo);
-             FileOutputStream fos = new FileOutputStream(destFile)) {
+
+        try (FileInputStream fis = new FileInputStream(archivo); FileOutputStream fos = new FileOutputStream(destFile)) {
 
             byte[] buffer = new byte[1024];
             int length;
-            while ((length = fis.read(buffer)) > 0) {fos.write(buffer, 0, length);}
-            
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+
             System.out.println("Archivo guardado en: " + destFile.getAbsolutePath());
-        } catch (IOException e) {e.getMessage();}
+        } catch (IOException e) {
+            e.getMessage();
+        }
     }
-    
-    private void finalizar(){
-        btnFinalizar.setOnMouseClicked((MouseEvent e)->{
-            creacionVehiculo();
+
+    private void finalizar() {
+        btnFinalizar.setOnMouseClicked((MouseEvent e) -> {
+            if (txtMotor.getText().isEmpty() || txtTransmision.getText().isEmpty() || txtPeso.getText().isEmpty()
+                    || txtUbicacion.getText().isEmpty() || listReparaciones.getItems().isEmpty()) {
+                info2.setText("ⓘ No se han completado todos los campos");
+                return; 
+            }
+            if (!creacionVehiculo()) {
+                return;
+            }
+
             App.historial.removeLast();
             App.historial.removeLast();
             FXMLLoader backloader = App.historial.getLast();
@@ -113,23 +163,23 @@ public class AddVehiculo2Controller implements Initializable {
             Scene s = p.getScene();
             App.actualFxml = backloader;
             vehiculoCreado.guardarVehiculo();
-            for(File f: listFiles){
-                saveFile(App.pathFotos,f);
+            for (File f : listFiles) {
+                saveFile(App.pathFotos, f);
             }
             App.stage.setScene(s);
             App.stage.setTitle("Catalogo de Vehiculos");
         });
     }
-    
-    private void borrarDeLista(){
-        btnBorrar.setOnMouseClicked((MouseEvent e)->{
+
+    private void borrarDeLista() {
+        btnBorrar.setOnMouseClicked((MouseEvent e) -> {
             oListR.remove(selectedItem);
             listReparaciones.setItems(oListR);
         });
     }
-    
-    private void volver(){
-        btnVolver.setOnMouseClicked((MouseEvent e)->{
+
+    private void volver() {
+        btnVolver.setOnMouseClicked((MouseEvent e) -> {
             FXMLLoader backloader = App.historial.getBack(App.actualFxml);
             Parent p = backloader.getRoot();
             Scene s = p.getScene();
@@ -137,10 +187,10 @@ public class AddVehiculo2Controller implements Initializable {
             App.stage.setScene(s);
         });
     }
-    
-    public void cargarVehiculo(Vehiculo v, ArrayListED<File> ls){
+
+    public void cargarVehiculo(Vehiculo v, ArrayListED<File> ls) {
         vehiculoCreado = v;
         listFiles = ls;
     }
-    
+
 }

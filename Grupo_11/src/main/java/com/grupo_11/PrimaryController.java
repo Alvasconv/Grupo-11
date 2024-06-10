@@ -234,15 +234,6 @@ public class PrimaryController implements Initializable {
         lstvehiculos.getChildren().add(scrollPane); 
     }
 
-//    @FXML
-//    private void filtrarVehiculos(ActionEvent event) {
-//        ArrayListED<Vehiculo> lst = Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos);
-//        ArrayListED<Vehiculo> lstf1 = FiltroVehiculos.filtrarPorMarcaYModelo(lst, marca.getValue(), modelo.getValue());
-//        ArrayListED<Vehiculo> lstf2;
-//        lstf2 = FiltroVehiculos.filtrarPorRangoDePrecio(lst, Double.parseDouble(precioMin.getText()), Double.parseDouble(precioMax.getText()));
-//        mostrarVehiculos(lstf2);
-//
-//    }
     private void actualizarDatos() {
         for (Vehiculo v : Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos)) {
             marca.getItems().add(v.getMarca());

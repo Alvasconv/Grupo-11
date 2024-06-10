@@ -68,6 +68,13 @@
                      </BorderPane.margin>
                   </VBox>
                </left>
+               <bottom>
+                  <VBox alignment="CENTER" prefHeight="37.0" prefWidth="289.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label fx:id="info" text="ⓘ" />
+                     </children>
+                  </VBox>
+               </bottom>
             </BorderPane>
          </children>
          <BorderPane.margin>

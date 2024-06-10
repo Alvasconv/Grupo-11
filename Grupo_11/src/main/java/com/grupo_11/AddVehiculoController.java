@@ -22,6 +22,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -40,24 +41,36 @@ import javafx.stage.StageStyle;
  */
 public class AddVehiculoController implements Initializable {
 
-    @FXML private Button btnContinuar;
-    @FXML private Button btnVolver;
-    @FXML private Button btnAdd;
-    @FXML private Button btnDelete;
-    @FXML private TextField txtMarca;
-    @FXML private TextField txtModelo;
-    @FXML private TextField txtAnio;
-    @FXML private TextField txtKilometraje;
-    @FXML private TextField txtPrecio;
-    @FXML private VBox panelFotos;
-    
+    @FXML
+    private Button btnContinuar;
+    @FXML
+    private Button btnVolver;
+    @FXML
+    private Button btnAdd;
+    @FXML
+    private Button btnDelete;
+    @FXML
+    private TextField txtMarca;
+    @FXML
+    private TextField txtModelo;
+    @FXML
+    private TextField txtAnio;
+    @FXML
+    private TextField txtKilometraje;
+    @FXML
+    private TextField txtPrecio;
+    @FXML
+    private VBox panelFotos;
+    @FXML
+    private Label info;
     private Vehiculo vehiculoCreado;
     private ImageView selectedItem;
     private CircularListED<String> clFotos;
     protected ArrayListED<File> filesFotos;
-    
+
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -67,18 +80,22 @@ public class AddVehiculoController implements Initializable {
         continuar();
         volver();
         deleteImg();
-    }    
-      
-    private void addFotos(){
+    }
+
+    private void addFotos() {
         btnAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent x) {
-                if(filesFotos==null) { filesFotos = new ArrayListED<>();}
-                if(clFotos==null) { clFotos = new CircularListED<>();}
+                if (filesFotos == null) {
+                    filesFotos = new ArrayListED<>();
+                }
+                if (clFotos == null) {
+                    clFotos = new CircularListED<>();
+                }
                 //Cargar foto del usuario
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.getExtensionFilters().addAll(
-                        new FileChooser.ExtensionFilter("Image Files","*.png", "*.jpg", "*.jpeg", "*.gif")
+                        new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
                 );
                 File fotoFile = fileChooser.showOpenDialog(null);
                 //Creacion de los ImageView con la foto cargada
@@ -91,31 +108,96 @@ public class AddVehiculoController implements Initializable {
                 panelFotos.getChildren().add(imgv);
                 clFotos.add(fotoFile.getName());
                 filesFotos.add(fotoFile);
-            }     
-      }); 
-    }
-    
-    private void creacionVehiculo(){
-        if(vehiculoCreado==null) { vehiculoCreado = new Vehiculo();}
-        
-        vehiculoCreado.setMarca(txtMarca.getText());
-        vehiculoCreado.setModelo(txtModelo.getText());
-        vehiculoCreado.setAño(Integer.parseInt(txtAnio.getText()));
-        vehiculoCreado.setKilometraje(Integer.parseInt(txtKilometraje.getText()));
-        vehiculoCreado.setPrecio(Integer.parseInt(txtPrecio.getText()));
-        vehiculoCreado.setFotos(clFotos);
-    }
-    
-    private void continuar(){
-        btnContinuar.setOnAction((ActionEvent e)->{
-            creacionVehiculo();
-            try { pasarInfoVehiculo();} 
-            catch (IOException ex) { ex.getMessage(); }
+            }
         });
     }
-    
-    private void volver(){
-        btnVolver.setOnAction((ActionEvent e)->{
+
+    private boolean creacionVehiculo() {
+        if (vehiculoCreado == null) {
+            vehiculoCreado = new Vehiculo();
+        }
+
+        vehiculoCreado.setMarca(txtMarca.getText());
+        vehiculoCreado.setModelo(txtModelo.getText());
+
+        try {
+            int año = Integer.parseInt(txtAnio.getText().trim());
+            if (año < 1800 || año > 2024) {
+                throw new IllegalArgumentException("Por favor, ingresa un año válido.");
+            }
+
+            // Validar que el campo de kilometraje sea un número válido
+            double kilometraje = Double.parseDouble(txtKilometraje.getText().trim());
+            if (kilometraje < 0) {
+                throw new IllegalArgumentException("Por favor, ingresa un kilometraje válido.");
+            }
+
+            // Validar que el campo de precio sea un número válido
+            double precio = Double.parseDouble(txtPrecio.getText().trim());
+            if (precio <= 0) {
+                throw new IllegalArgumentException("Por favor, ingresa un precio válido.");
+            }
+
+            // Si todas las validaciones pasan, asigna los valores al vehículo
+            vehiculoCreado.setMarca(txtMarca.getText());
+            vehiculoCreado.setModelo(txtModelo.getText());
+            vehiculoCreado.setAño(Integer.parseInt(txtAnio.getText()));
+            vehiculoCreado.setKilometraje(Double.parseDouble(txtKilometraje.getText()));
+            vehiculoCreado.setPrecio(Double.parseDouble(txtPrecio.getText()));
+            vehiculoCreado.setFotos(clFotos);
+
+            return true;
+        } catch (NumberFormatException e) {
+            // Si ocurre un error al convertir a número, muestra un mensaje de error
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error de formato");
+            alert.setContentText("Por favor, ingresa los datos correctamente.");
+            alert.showAndWait();
+            return false;
+        } catch (IllegalArgumentException e) {
+            // Si falla alguna validación, muestra un mensaje de error con la descripción del problema
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error de entrada");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return false;
+        }
+    }
+
+    private void continuar() {
+        btnContinuar.setOnAction((ActionEvent e) -> {
+            // Validar si todos los campos están llenos
+            if (txtMarca.getText().isEmpty() || txtModelo.getText().isEmpty() || txtPrecio.getText().isEmpty()
+                    || txtKilometraje.getText().isEmpty() || panelFotos.getChildren().isEmpty()) {
+                info.setText("ⓘ No se han completado todos los campos");
+                return; // Salir del método si no se han completado todos los campos
+            }
+            if (!creacionVehiculo()) {
+                return; // Salir del método si la creación del vehículo falla
+            }
+
+            try {
+                pasarInfoVehiculo();
+            } catch (IOException ex) {
+                ex.getMessage();
+            }
+        });
+    }
+
+//    private void continuar() {
+//        btnContinuar.setOnAction((ActionEvent e) -> {
+//            creacionVehiculo();
+//            try {
+//                pasarInfoVehiculo();
+//            } catch (IOException ex) {
+//                ex.getMessage();
+//            }
+//        });
+//    }
+    private void volver() {
+        btnVolver.setOnAction((ActionEvent e) -> {
             App.historial.removeLast();
             FXMLLoader backloader = App.historial.getLast();
             Parent p = backloader.getRoot();
@@ -125,17 +207,16 @@ public class AddVehiculoController implements Initializable {
             App.stage.setScene(s);
         });
     }
-    
-    
-    private void pasarInfoVehiculo() throws IOException{
+
+    private void pasarInfoVehiculo() throws IOException {
         FXMLLoader loader;
         Parent p;
         Scene nextScene;
-        if(App.historial.hasNext(App.actualFxml)){
+        if (App.historial.hasNext(App.actualFxml)) {
             loader = App.historial.getNext(App.actualFxml);
             p = loader.getRoot();
             nextScene = p.getScene();
-        }else{
+        } else {
             loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("AddVehiculo2.fxml"));
             App.historial.add(loader, App.actualFxml);
@@ -147,8 +228,8 @@ public class AddVehiculoController implements Initializable {
         controller.cargarVehiculo(vehiculoCreado, filesFotos);
         App.stage.setScene(nextScene);
     }
-    
-   public EventHandler<MouseEvent> itemResaltado() {
+
+    public EventHandler<MouseEvent> itemResaltado() {
         return e -> {
             if (e.getSource() instanceof ImageView) {
                 ImageView imv = (ImageView) e.getSource();
@@ -166,26 +247,28 @@ public class AddVehiculoController implements Initializable {
             }
         };
     }
-    
-    public void deleteImg(){
-        btnDelete.setOnMouseClicked((MouseEvent e)->{ 
-            if (selectedItem == null) {return;}
-                Alert alert = new Alert(AlertType.CONFIRMATION);
-                alert.setTitle("Confirm Deletion");
-                alert.setHeaderText(null);
-                alert.setContentText("Seguro de borrar esta foto?");
-                alert.initModality(Modality.APPLICATION_MODAL);
-                alert.initStyle(StageStyle.UTILITY);
 
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.isPresent() && result.get() == ButtonType.OK) {
-                    int ind = panelFotos.getChildren().indexOf(selectedItem);
-                    panelFotos.getChildren().remove(selectedItem);
-                    clFotos.remove(ind);
-                    filesFotos.remove(ind);
-                    selectedItem = null;
-                }
+    public void deleteImg() {
+        btnDelete.setOnMouseClicked((MouseEvent e) -> {
+            if (selectedItem == null) {
+                return;
+            }
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirm Deletion");
+            alert.setHeaderText(null);
+            alert.setContentText("Seguro de borrar esta foto?");
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initStyle(StageStyle.UTILITY);
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                int ind = panelFotos.getChildren().indexOf(selectedItem);
+                panelFotos.getChildren().remove(selectedItem);
+                clFotos.remove(ind);
+                filesFotos.remove(ind);
+                selectedItem = null;
+            }
         });
     }
-    
+
 }
