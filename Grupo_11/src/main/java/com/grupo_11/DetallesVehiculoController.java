@@ -5,8 +5,13 @@
 package com.grupo_11;
 
 import Modelo.ArrayListED;
-import Modelo.CircularListED;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,8 +21,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -149,5 +154,45 @@ public class DetallesVehiculoController implements Initializable {
         });
     }
 
-    
+    @FXML
+    private void borrarVehiculo(ActionEvent event) {
+         if (vehiculo != null) {
+            try {
+                String csvFilePath = Vehiculo.archivoVehiculos; 
+                ArrayListED<String> newLines = new ArrayListED<>();
+
+                try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        String[] datos = line.split(",");
+                        if (!datos[1].trim().equals(vehiculo.getMarca()) ||
+                            !datos[2].trim().equals(vehiculo.getModelo()) ||
+                            !datos[3].trim().equals(String.valueOf(vehiculo.getAño()))) {
+                            newLines.add(line);
+                        }
+                    }
+                }
+
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(csvFilePath))) {
+                    for (String line : newLines) {
+                        bw.write(line);
+                        bw.newLine();
+                    }
+                }
+
+            App.historial.removeLast();
+            FXMLLoader backloader = App.historial.getLast();
+            Parent p = backloader.getRoot();
+            Scene s = p.getScene();
+            App.actualFxml = backloader;
+            PrimaryController controller = backloader.getController();
+            controller.mostrarVehiculos(Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos));
+            App.stage.setTitle("Catálogo de Vehículos");
+            App.stage.setScene(s);
+            
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

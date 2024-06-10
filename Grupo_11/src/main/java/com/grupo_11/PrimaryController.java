@@ -37,10 +37,6 @@ public class PrimaryController implements Initializable {
     @FXML
     private Button botonAñadir;
     @FXML
-    private Button botonEditar;
-    @FXML
-    private Button botonRemover;
-    @FXML
     private ComboBox<String> marca;
     @FXML
     private ComboBox<String> modelo;
@@ -91,13 +87,6 @@ public class PrimaryController implements Initializable {
         App.stage.setScene(nextScene);
     }
 
-    @FXML
-    private void editarVehiculo(ActionEvent event) {
-    }
-
-    @FXML
-    private void RemoverVehiculo(ActionEvent event) {
-    }
 
     private void onMarcaSelected() {
         if (marca.getValue() != null) {

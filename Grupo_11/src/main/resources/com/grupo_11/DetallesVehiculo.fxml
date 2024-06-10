@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox styleClass="fondoVentana1" stylesheets="@../../css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grupo_11.DetallesVehiculoController">
+<HBox styleClass="fondoVentana1" stylesheets="@../../css/estilos.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grupo_11.DetallesVehiculoController">
    <children>
       <Button fx:id="btnVolver" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../../../../../../../Grupo-11/Grupo_11/src/main/resources/css/estilos.css">
          <graphic>
@@ -46,9 +46,9 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="btnBorrar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../../../../../../../Grupo-11/Grupo_11/src/main/resources/css/estilos.css">
+                        <Button fx:id="btnBorrar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#borrarVehiculo" styleClass="botones2" stylesheets="@../../../../../../../../Grupo-11/Grupo_11/src/main/resources/css/estilos.css">
                            <graphic>
-                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="25.0" fitWidth="25.0" onMouseClicked="#borrarVehiculo" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../archivos/iconos/deleteIcon.png" />
                                  </image>
