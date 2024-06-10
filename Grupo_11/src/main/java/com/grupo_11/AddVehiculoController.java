@@ -208,21 +208,59 @@ public class AddVehiculoController implements Initializable {
         });
     }
 
+//    private void pasarInfoVehiculo() throws IOException {
+//        FXMLLoader loader;
+//        Parent p;
+//        Scene nextScene;
+//        if (App.historial.hasNext(App.actualFxml)) {
+//            loader = App.historial.getNext(App.actualFxml);
+//            p = loader.getRoot();
+//            nextScene = p.getScene();
+//        } else {
+//            loader = new FXMLLoader();
+//            loader.setLocation(getClass().getResource("AddVehiculo2.fxml"));
+//            App.historial.add(loader, App.actualFxml);
+//            p = loader.load();
+//            nextScene = new Scene(p);
+//        }
+//        App.actualFxml = loader;
+//        AddVehiculo2Controller controller = loader.getController();
+//        controller.cargarVehiculo(vehiculoCreado, filesFotos);
+//        App.stage.setScene(nextScene);
+//    }
     private void pasarInfoVehiculo() throws IOException {
         FXMLLoader loader;
         Parent p;
         Scene nextScene;
+
         if (App.historial.hasNext(App.actualFxml)) {
             loader = App.historial.getNext(App.actualFxml);
             p = loader.getRoot();
-            nextScene = p.getScene();
+            if (p == null) {
+                System.out.println("Error: El loader.getRoot() devolvió null.");
+            }
+            nextScene = p != null ? p.getScene() : null;
         } else {
             loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("AddVehiculo2.fxml"));
             App.historial.add(loader, App.actualFxml);
-            p = loader.load();
+            try {
+                p = loader.load();
+            } catch (IOException e) {
+                System.out.println("Error cargando el archivo FXML: " + e.getMessage());
+                throw e;
+            }
+            if (p == null) {
+                System.out.println("Error: El loader.load() devolvió null.");
+            }
             nextScene = new Scene(p);
         }
+
+        if (nextScene == null) {
+            System.out.println("Error: nextScene es null.");
+            return;
+        }
+
         App.actualFxml = loader;
         AddVehiculo2Controller controller = loader.getController();
         controller.cargarVehiculo(vehiculoCreado, filesFotos);

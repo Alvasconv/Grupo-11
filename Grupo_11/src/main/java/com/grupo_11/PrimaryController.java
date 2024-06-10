@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -25,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class PrimaryController implements Initializable {
@@ -118,19 +120,37 @@ public class PrimaryController implements Initializable {
         ArrayListED<Vehiculo> lst = Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos);
         ArrayListED<Vehiculo> lstFiltrada = FiltroVehiculos.filtrarPorMarcaYModelo(lst, marca.getValue(), modelo.getValue());
 
-        if (!precioMin.getText().isEmpty() && !precioMax.getText().isEmpty()) {
-            lstFiltrada = FiltroVehiculos.filtrarPorRangoDePrecio(lstFiltrada,
-                    Double.parseDouble(precioMin.getText()),
-                    Double.parseDouble(precioMax.getText()));
+        try {
+            if (!precioMin.getText().isEmpty() && !precioMax.getText().isEmpty()) {
+                double precioMinVal = Double.parseDouble(precioMin.getText());
+                double precioMaxVal = Double.parseDouble(precioMax.getText());
+                lstFiltrada = FiltroVehiculos.filtrarPorRangoDePrecio(lstFiltrada, precioMinVal, precioMaxVal);
+            }
+        } catch (NumberFormatException e) {
+            mostrarError("Por favor, ingresa valores numéricos válidos para el rango de precios.");
+            return;
         }
 
-        if (!kilometrajeMin.getText().isEmpty() && !kilometrajeMax.getText().isEmpty()) {
-            lstFiltrada = FiltroVehiculos.filtrarPorRangoDeKilometraje(lstFiltrada,
-                    Integer.parseInt(kilometrajeMin.getText()),
-                    Integer.parseInt(kilometrajeMax.getText()));
+        try {
+            if (!kilometrajeMin.getText().isEmpty() && !kilometrajeMax.getText().isEmpty()) {
+                int kilometrajeMinVal = Integer.parseInt(kilometrajeMin.getText());
+                int kilometrajeMaxVal = Integer.parseInt(kilometrajeMax.getText());
+                lstFiltrada = FiltroVehiculos.filtrarPorRangoDeKilometraje(lstFiltrada, kilometrajeMinVal, kilometrajeMaxVal);
+            }
+        } catch (NumberFormatException e) {
+            mostrarError("Por favor, ingresa valores numéricos válidos para el rango de kilometraje.");
+            return;
         }
 
         mostrarVehiculos(lstFiltrada);
+    }
+
+    private void mostrarError(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error de formato");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 
     private void rellenarComboBoxs(ArrayListED<Vehiculo> vehiculos) {
@@ -151,29 +171,6 @@ public class PrimaryController implements Initializable {
         }
         modelo.setItems(FXCollections.observableArrayList(modelos));
     }
-//    public void rellenarComboBoxs(ArrayListED<Vehiculo> listVehiculo) {
-//        ArrayListED<String> marcas = new ArrayListED<>();
-//        Set<String> uniqueMarcas = new HashSet<>();
-//
-//        for (Vehiculo v : listVehiculo) {
-//            uniqueMarcas.add(v.getMarca());
-//        }
-//
-//        marcas.addAll(uniqueMarcas);
-//
-//        String[] marcasArray = marcas.toArray();
-//        ObservableList<String> options1 = FXCollections.observableArrayList(marcasArray);
-//        marca.setItems(options1);
-//        modelo.setDisable(true);
-//        marca.setOnAction(event -> {
-//            if (marca.getSelectionModel().getSelectedItem() != null) {
-//                modelo.setDisable(false);
-//                rellenarModelos(listVehiculo);
-//            } else {
-//                modelo.setDisable(true);
-//            }
-//        });
-//    }
 
     public void rellenarModelos(ArrayListED<Vehiculo> listVehiculo) {
         ArrayListED<String> modelos = new ArrayListED<>();
@@ -193,8 +190,9 @@ public class PrimaryController implements Initializable {
 
     public void mostrarVehiculos(ArrayListED<Vehiculo> lst) {
         GridPane gridPane = new GridPane();
-        gridPane.setHgap(10); 
-        gridPane.setVgap(10); 
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
         int numColumns = 2;
         int row = 0;
         int col = 0;
@@ -207,16 +205,16 @@ public class PrimaryController implements Initializable {
             File imageFile = new File(imagePath);
 
             ImageView imageView = new ImageView(new Image(imageFile.toURI().toString()));
-            imageView.setFitWidth(100); 
-            imageView.setFitHeight(100); 
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
 
             VBox vboxDatos = new VBox();
             vboxDatos.setSpacing(5);
 
             vboxDatos.getChildren().addAll(
-                new Label(v.getMarca()), 
-                new Label(v.getKilometraje() + " km - " + v.getAño()), 
-                new Label(v.getUbicacion()) 
+                    new Label(v.getMarca()),
+                    new Label(v.getKilometraje() + " km - " + v.getAño()),
+                    new Label(v.getUbicacion())
             );
 
             hboxVehiculo.getChildren().addAll(imageView, vboxDatos);
@@ -229,9 +227,11 @@ public class PrimaryController implements Initializable {
         }
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(gridPane);
-        scrollPane.setFitToWidth(false); 
-        lstvehiculos.getChildren().clear(); 
-        lstvehiculos.getChildren().add(scrollPane); 
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        lstvehiculos.getChildren().clear();
+        lstvehiculos.getChildren().add(scrollPane);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
     }
 
     private void actualizarDatos() {

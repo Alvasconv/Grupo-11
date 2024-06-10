@@ -63,6 +63,11 @@ public class AddVehiculo2Controller implements Initializable {
     ArrayListED<File> listFiles;
     private Vehiculo vehiculoCreado;
     String selectedItem;
+    //private PrimaryController primary;
+//
+//    public AddVehiculo2Controller(PrimaryController primary) {
+//        this.primary = primary;
+//    }
 
     /**
      * Initializes the controller class.
@@ -76,6 +81,7 @@ public class AddVehiculo2Controller implements Initializable {
         addReparaciones();
         volver();
         finalizar();
+
         listReparaciones.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -110,21 +116,21 @@ public class AddVehiculo2Controller implements Initializable {
             }
             vehiculoCreado.setPeso(peso);
 
-            return true; 
+            return true;
         } catch (NumberFormatException e) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error de formato");
             alert.setContentText("Por favor, ingresa un número válido en el campo de peso.");
             alert.showAndWait();
-            return false; 
+            return false;
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error de entrada");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
-            return false; 
+            return false;
         }
     }
 
@@ -150,7 +156,7 @@ public class AddVehiculo2Controller implements Initializable {
             if (txtMotor.getText().isEmpty() || txtTransmision.getText().isEmpty() || txtPeso.getText().isEmpty()
                     || txtUbicacion.getText().isEmpty() || listReparaciones.getItems().isEmpty()) {
                 info2.setText("ⓘ No se han completado todos los campos");
-                return; 
+                return;
             }
             if (!creacionVehiculo()) {
                 return;
@@ -168,7 +174,10 @@ public class AddVehiculo2Controller implements Initializable {
             }
             App.stage.setScene(s);
             App.stage.setTitle("Catalogo de Vehiculos");
+//            ArrayListED<Vehiculo> listaVehiculos = Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos);
+//            primary.mostrarVehiculos(listaVehiculos);
         });
+
     }
 
     private void borrarDeLista() {
