@@ -51,7 +51,8 @@ public class EditarVehiculoController implements Initializable {
     @FXML private TextField txtPrecio;
     @FXML private VBox panelFotos;
     
-    private Vehiculo vehiculo;
+    private Vehiculo vehiculoEditado;
+    static Vehiculo vehiculoAnterior;
     private ImageView selectedItem;
     private ArrayListED<String> fotosSubidas;
     static Stage actualStage;
@@ -98,12 +99,12 @@ public class EditarVehiculoController implements Initializable {
     }
 
     private boolean creacionVehiculo() {
-        if (vehiculo == null) {
-            vehiculo = new Vehiculo();
+        if (vehiculoEditado == null) {
+            vehiculoEditado = new Vehiculo();
         }
 
-        vehiculo.setMarca(txtMarca.getText());
-        vehiculo.setModelo(txtModelo.getText());
+        vehiculoEditado.setMarca(txtMarca.getText());
+        vehiculoEditado.setModelo(txtModelo.getText());
 
         try {
             int año = Integer.parseInt(txtAnio.getText().trim());
@@ -124,11 +125,11 @@ public class EditarVehiculoController implements Initializable {
             }
 
             // Si todas las validaciones pasan, asigna los valores al vehículo
-            vehiculo.setMarca(txtMarca.getText());
-            vehiculo.setModelo(txtModelo.getText());
-            vehiculo.setAño(Integer.parseInt(txtAnio.getText()));
-            vehiculo.setKilometraje(Double.parseDouble(txtKilometraje.getText()));
-            vehiculo.setPrecio(Double.parseDouble(txtPrecio.getText()));
+            vehiculoEditado.setMarca(txtMarca.getText());
+            vehiculoEditado.setModelo(txtModelo.getText());
+            vehiculoEditado.setAño(Integer.parseInt(txtAnio.getText()));
+            vehiculoEditado.setKilometraje(Double.parseDouble(txtKilometraje.getText()));
+            vehiculoEditado.setPrecio(Double.parseDouble(txtPrecio.getText()));
             
 
             return true;
@@ -189,7 +190,7 @@ public class EditarVehiculoController implements Initializable {
         for(String f: fotosSubidas){System.out.println(f);}
         App.actualFxml = loader;
         EditarVehiculo2Controller controller = loader.getController();
-        controller.cargarVehiculo(vehiculo, fotosSubidas);
+        controller.cargarVehiculo(vehiculoEditado, fotosSubidas);
         EditarVehiculoController.actualStage.setScene(nextScene);
     }
     
@@ -238,10 +239,11 @@ public class EditarVehiculoController implements Initializable {
         if(actualLoader==null) {actualLoader = loader;}
         EditarVehiculoController.actualStage=st;
         cerrarVentana();
-        vehiculo = Vehiculo.clonarVehiculo(v);
-        String s = vehiculo.getFotos().get(0);
+        vehiculoAnterior = v;
+        vehiculoEditado = Vehiculo.clonarVehiculo(v);
+        String s = vehiculoEditado.getFotos().get(0);
         
-        for(int i=0;i<vehiculo.getFotos().size();i++){
+        for(int i=0;i<vehiculoEditado.getFotos().size();i++){
             File f = new File(App.pathFotos+s);
             mostrarImagen(f);
             s = v.getFotos().getNext(s);
@@ -249,13 +251,13 @@ public class EditarVehiculoController implements Initializable {
         }
 
         System.out.println("fotosSubidas "+fotosSubidas.size()+" -> "+fotosSubidas.print());
-        System.out.println("clFotos "+vehiculo.getFotos().size()+" -> "+vehiculo.getFotos().print());
+        System.out.println("clFotos "+vehiculoEditado.getFotos().size()+" -> "+vehiculoEditado.getFotos().print());
         
-        txtMarca.setText(vehiculo.getMarca());
-        txtModelo.setText(vehiculo.getModelo());
-        txtAnio.setText(String.valueOf(vehiculo.getAño()));
-        txtKilometraje.setText(String.valueOf(vehiculo.getKilometraje()));
-        txtPrecio.setText(String.valueOf(vehiculo.getPrecio()));
+        txtMarca.setText(vehiculoEditado.getMarca());
+        txtModelo.setText(vehiculoEditado.getModelo());
+        txtAnio.setText(String.valueOf(vehiculoEditado.getAño()));
+        txtKilometraje.setText(String.valueOf(vehiculoEditado.getKilometraje()));
+        txtPrecio.setText(String.valueOf(vehiculoEditado.getPrecio()));
     }
     
     private void mostrarImagen(File f){

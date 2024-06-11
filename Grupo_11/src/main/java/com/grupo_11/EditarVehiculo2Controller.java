@@ -5,9 +5,14 @@
 package com.grupo_11;
 
 import Modelo.ArrayListED;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -146,6 +151,12 @@ public class EditarVehiculo2Controller implements Initializable {
                 saveFile(App.pathFotos,f,uniqueID);
                 vehiculo.addFoto(uniqueID+f.getName());
             }
+            try {
+                borrarVehiculoAnterior();
+            } catch (IOException ex) {
+                ex.getMessage();
+                System.out.println("Fallo borrar vehiculo anterior");
+            }
             
             vehiculo.guardarVehiculo();
             App.historial.removeLast();
@@ -203,6 +214,35 @@ public class EditarVehiculo2Controller implements Initializable {
             App.historial.removeLast();
             App.actualFxml = App.historial.getLast();
         });
+    }
+    
+    private void borrarVehiculoAnterior() throws FileNotFoundException, IOException{
+        try {
+                String csvFilePath = Vehiculo.archivoVehiculos; 
+                ArrayListED<String> newLines = new ArrayListED<>();
+
+                try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        String[] datos = line.split(",");
+                        if (!datos[1].trim().equals(EditarVehiculoController.vehiculoAnterior.getMarca()) ||
+                            !datos[2].trim().equals(EditarVehiculoController.vehiculoAnterior.getModelo()) ||
+                            !datos[3].trim().equals(String.valueOf(EditarVehiculoController.vehiculoAnterior.getAño()))) {
+                            newLines.add(line);
+                        }
+                    }
+                }
+
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(csvFilePath))) {
+                    for (String line : newLines) {
+                        bw.write(line);
+                        bw.newLine();
+                    }
+                }
+                } catch (IOException e) {
+                e.printStackTrace();
+            }
+
     }
 
 }
