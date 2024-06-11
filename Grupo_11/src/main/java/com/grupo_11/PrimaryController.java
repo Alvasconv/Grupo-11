@@ -58,6 +58,8 @@ public class PrimaryController implements Initializable {
     @FXML
     private Button botonFavoritos;
     @FXML
+    private Button btnTabComp;
+    @FXML
     private ComboBox<String> ordenar = new ComboBox<>();
 
     @Override
@@ -83,6 +85,7 @@ public class PrimaryController implements Initializable {
         ordenar.setOnAction(event -> ordenarVehiculos());  // Manejar la selección de ordenación
         btnLimpiarFiltro.setDisable(true);
         verFavoritos();
+        verTablaComparativa();
     }
 
     @FXML
@@ -387,6 +390,27 @@ public class PrimaryController implements Initializable {
                 } catch (IOException ex) {
                     ex.getMessage();
                 }
+            }
+        });
+    }
+    
+    private void verTablaComparativa(){
+        btnTabComp.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                FXMLLoader loader;
+                Parent p;
+                Scene nextScene;
+                try{
+                loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("TablaParametrizada.fxml"));
+                App.historial.add(loader, App.actualFxml);
+                p = loader.load();
+                nextScene = new Scene(p);
+                App.actualFxml = loader;
+                App.stage.setTitle("TablaComparativa");
+                App.stage.setScene(nextScene);
+                }catch(IOException ex) {ex.getMessage();}
             }
         });
     }
