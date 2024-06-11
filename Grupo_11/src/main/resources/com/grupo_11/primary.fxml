@@ -17,7 +17,7 @@
    <top>
       <VBox alignment="TOP_CENTER" prefHeight="40.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="BOTTOM_CENTER" styleClass="titulo" stylesheets="@../../css/estilos.css" text="Catálogo del Vehiculos">
+            <Label alignment="BOTTOM_CENTER" styleClass="titulo" stylesheets="@../../css/estilos.css" text="Catálogo de Vehiculos">
                <font>
                   <Font size="20.0" />
                </font>

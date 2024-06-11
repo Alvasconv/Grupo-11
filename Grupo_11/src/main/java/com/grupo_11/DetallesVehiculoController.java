@@ -245,7 +245,7 @@ public class DetallesVehiculoController implements Initializable {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmación");
         alert.setHeaderText(null);
-        alert.setContentText("¿Está seguro de añadir este vehículo a favoritos?");
+        alert.setContentText("¿Está seguro de añadir este vehículo a favoritos?\nEsta acción no se puede deshacer.");
 
         ButtonType buttonTypeYes = new ButtonType("Sí");
         ButtonType buttonTypeNo = new ButtonType("No");

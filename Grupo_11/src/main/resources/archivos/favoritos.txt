@@ -1,1 +1,2 @@
 6666.0,Ford,Mustang,2013,2222.0,aaa,bbb,222.0,ccc,ddddd-fordMustang3.jpg
+12000.0,Audi,gtr,2000,0.0,v6,manual,1200.0,Quito,llantas nuevas;rines renovados;remodelacion de asientos-b5a53eefc084f3auto.jpg;b5a53eelogo1.png
