@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -189,6 +190,7 @@ public class PrimaryController implements Initializable {
         for (Vehiculo v : lst) {
             HBox hboxVehiculo = new HBox();
             hboxVehiculo.setSpacing(10);
+            hboxVehiculo.getStyleClass().add("fondoCuadroVehiculo");
 
             String imagePath = Vehiculo.carpetaFotos + v.getFotos().first.getContent();
             File imageFile = new File(imagePath);
@@ -200,11 +202,17 @@ public class PrimaryController implements Initializable {
             VBox vboxDatos = new VBox();
             vboxDatos.setSpacing(5);
 
-            vboxDatos.getChildren().addAll(
-                    new Label(v.getMarca()),
-                    new Label(v.getKilometraje() + " km - " + v.getAño()),
-                    new Label(v.getUbicacion())
-            );
+             Label marcaV = new Label(v.getMarca());
+            marcaV.getStyleClass().add("texto1");
+            
+            Label kilometraje = new Label( v.getAño()+" - " + v.getKilometraje() + " km" );
+            kilometraje.getStyleClass().add("texto");
+            
+            Label ubicacion = new Label(v.getUbicacion());
+            ubicacion.getStyleClass().add("texto");
+           
+            vboxDatos.getChildren().addAll(marcaV, kilometraje, ubicacion);
+
 
             hboxVehiculo.getChildren().addAll(imageView, vboxDatos);
             
@@ -226,6 +234,7 @@ public class PrimaryController implements Initializable {
         }
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(gridPane);
+        scrollPane.setPadding(new Insets(10));
 
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);

@@ -62,3 +62,14 @@
     -fx-font-weight: bond;
     -fx-text-fill: #333333;
 }
+
+.fondoCuadroVehiculo{
+     -fx-padding: 10px;
+    -fx-background-color: #fafafa;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0, 0, 0);
+    -fx-border-color: #e8e5ec;
+    -fx-border-width: 0.5px;
+    -fx-margin: 10px;
+}
