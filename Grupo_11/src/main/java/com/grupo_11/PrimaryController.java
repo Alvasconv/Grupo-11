@@ -64,7 +64,7 @@ public class PrimaryController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ObservableList<String> opciones = FXCollections.observableArrayList("Menor Precio", "Mayor Precio", "Menor recorrido", "Mayor recorrido");
         ordenar.getItems().addAll(opciones);
-        
+
         try {
             mostrarVehiculos(Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos));
         } catch (Exception e) {
@@ -126,6 +126,10 @@ public class PrimaryController implements Initializable {
         ArrayListED<Vehiculo> lst = Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos);
         ArrayListED<Vehiculo> lstFiltrada = FiltroVehiculos.filtrarPorMarcaYModelo(lst, marca.getValue(), modelo.getValue());
 
+        if (marca.getValue() != null && modelo.getValue() != null) {
+            lstFiltrada = FiltroVehiculos.filtrarPorMarcaYModelo(lstFiltrada, marca.getValue(), modelo.getValue());
+        }
+
         try {
             if (!precioMin.getText().isEmpty() && !precioMax.getText().isEmpty()) {
                 double precioMinVal = Double.parseDouble(precioMin.getText());
@@ -148,7 +152,11 @@ public class PrimaryController implements Initializable {
             return;
         }
 
-        mostrarVehiculos(lstFiltrada);
+        if (lstFiltrada.isEmpty()) {
+            mostrarError("No se han encontrado vehículos con estos datos.");
+        } else {
+            mostrarVehiculos(lstFiltrada);
+        }
         btnLimpiarFiltro.setDisable(false);
     }
 
@@ -229,7 +237,7 @@ public class PrimaryController implements Initializable {
             Label ubicacion = new Label(v.getUbicacion());
             ubicacion.getStyleClass().add("texto");
 
-            Label precioV = new Label("$"+v.getPrecio());
+            Label precioV = new Label("$" + v.getPrecio());
             precioV.getStyleClass().add("texto1");
 
             vboxDatos.getChildren().addAll(marcaV, kilometraje, ubicacion, precioV);
@@ -287,7 +295,6 @@ public class PrimaryController implements Initializable {
         marca.getItems().addAll(marcas);
         modelo.getItems().addAll(modelos);
     }
-
 
     private void pasarInfoVehiculo(Vehiculo v) throws IOException {
         FXMLLoader loader;
@@ -360,24 +367,26 @@ public class PrimaryController implements Initializable {
         }
         mostrarVehiculos(vehiculos);
     }
-    
-    private void verFavoritos(){
+
+    private void verFavoritos() {
         botonFavoritos.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 FXMLLoader loader;
                 Parent p;
                 Scene nextScene;
-                try{
-                loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("Favoritos.fxml"));
-                App.historial.add(loader, App.actualFxml);
-                p = loader.load();
-                nextScene = new Scene(p);
-                App.actualFxml = loader;
-                App.stage.setTitle("Lista de Favoritos");
-                App.stage.setScene(nextScene);
-                }catch(IOException ex) {ex.getMessage();}
+                try {
+                    loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("Favoritos.fxml"));
+                    App.historial.add(loader, App.actualFxml);
+                    p = loader.load();
+                    nextScene = new Scene(p);
+                    App.actualFxml = loader;
+                    App.stage.setTitle("Lista de Favoritos");
+                    App.stage.setScene(nextScene);
+                } catch (IOException ex) {
+                    ex.getMessage();
+                }
             }
         });
     }
