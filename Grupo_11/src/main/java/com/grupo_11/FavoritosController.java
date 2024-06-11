@@ -33,25 +33,29 @@ import javafx.scene.layout.VBox;
  * @author vv
  */
 public class FavoritosController implements Initializable {
-    
-    @FXML private Button btnVolver;
-    @FXML private ScrollPane panel;
-    @FXML private VBox lstvehiculos;
+
+    @FXML
+    private Button btnVolver;
+    @FXML
+    private ScrollPane panel;
+    @FXML
+    private VBox lstvehiculos;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            mostrarVehiculos(Vehiculo.leerListaVehiculos(App.pathArchivos+"favoritos.txt"));
+            mostrarVehiculos(Vehiculo.leerListaVehiculos(App.pathArchivos + "favoritos.txt"));
         } catch (Exception e) {
             System.out.println(e);
         }
         volver();
-    }   
-    
-     public void mostrarVehiculos(ArrayListED<Vehiculo> lst) {
-         GridPane gridPane = new GridPane();
+    }
+
+    public void mostrarVehiculos(ArrayListED<Vehiculo> lst) {
+        GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(10);
 
@@ -82,8 +86,8 @@ public class FavoritosController implements Initializable {
 
             Label ubicacion = new Label(v.getUbicacion());
             ubicacion.getStyleClass().add("texto");
-            
-            Label precioV = new Label("$"+v.getPrecio());
+
+            Label precioV = new Label("$" + v.getPrecio());
             precioV.getStyleClass().add("texto1");
 
             vboxDatos.getChildren().addAll(marcaV, kilometraje, ubicacion, precioV);
@@ -119,8 +123,8 @@ public class FavoritosController implements Initializable {
         lstvehiculos.getChildren().clear();
         lstvehiculos.getChildren().add(panel);
     }
-     
-     private void pasarInfoVehiculo(Vehiculo v) throws IOException {
+
+    private void pasarInfoVehiculo(Vehiculo v) throws IOException {
         FXMLLoader loader;
         Parent p;
         Scene nextScene;
@@ -141,8 +145,8 @@ public class FavoritosController implements Initializable {
         App.stage.setTitle("Detalles del Vehiculo");
         App.stage.setScene(nextScene);
     }
-     
-     private void volver() {
+
+    private void volver() {
         btnVolver.setOnAction((ActionEvent e) -> {
             App.historial.removeLast();
             FXMLLoader backloader = App.historial.getLast();
@@ -155,5 +159,5 @@ public class FavoritosController implements Initializable {
             App.stage.setScene(s);
         });
     }
-    
+
 }

@@ -27,7 +27,7 @@ public class ArrayListED<E> implements Iterable<E>, Serializable {
     }
 
     private boolean isFull() {
-        return this.effectiveSize == this.capacity-1;
+        return this.effectiveSize == this.capacity - 1;
     }
 
     public int size() {
@@ -160,7 +160,7 @@ public class ArrayListED<E> implements Iterable<E>, Serializable {
     }
 
     private void addCapacity() {
-        E[] newList = (E[]) new Object[capacity*2];
+        E[] newList = (E[]) new Object[capacity * 2];
         for (int i = 0; i < this.effectiveSize; i++) {
             newList[i] = elements[i];
         }
@@ -197,27 +197,36 @@ public class ArrayListED<E> implements Iterable<E>, Serializable {
         System.arraycopy(this.elements, 0, array, 0, this.effectiveSize);
         return array;
     }
-    
+
     public String print() {
-        if(this.isEmpty()){ return "";}
-        String resultado="";
+        if (this.isEmpty()) {
+            return "";
+        }
+        String resultado = "";
         resultado = resultado.concat(this.elements[0].toString());
-        for(int i=1; i<this.effectiveSize;i++){
-            resultado = resultado.concat(";"+this.elements[i].toString());
+        for (int i = 1; i < this.effectiveSize; i++) {
+            resultado = resultado.concat(";" + this.elements[i].toString());
         }
         return resultado;
     }
-    
-        public void sort(Comparator<E> c) {
-    for (int i = 0; i < effectiveSize - 1; i++) {
-        for (int j = 0; j < effectiveSize - i - 1; j++) {
-            if (c.compare(elements[j], elements[j + 1]) > 0) {
-                E temp = elements[j];
-                elements[j] = elements[j + 1];
-                elements[j + 1] = temp;
+
+    public void sort(Comparator<E> c) {
+        for (int i = 0; i < effectiveSize - 1; i++) {
+            for (int j = 0; j < effectiveSize - i - 1; j++) {
+                if (c.compare(elements[j], elements[j + 1]) > 0) {
+                    E temp = elements[j];
+                    elements[j] = elements[j + 1];
+                    elements[j + 1] = temp;
+                }
             }
         }
     }
-}
 
+    public String[] toStringArray() {
+        String[] array = new String[this.effectiveSize];
+        for (int i = 0; i < this.effectiveSize; i++) {
+            array[i] = this.elements[i].toString();
+        }
+        return array;
+    }
 }

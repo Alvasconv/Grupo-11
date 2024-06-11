@@ -37,9 +37,9 @@
                <right>
                   <HBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="favorito" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../../../../../../../Grupo-11/Grupo_11/src/main/resources/css/estilos.css">
+                        <Button fx:id="favorito" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#marcarFavorito" styleClass="botones2" stylesheets="@../../../../../../../../Grupo-11/Grupo_11/src/main/resources/css/estilos.css">
                            <graphic>
-                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="iconoFavorito" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../archivos/iconos/fav.png" />
                                  </image>
