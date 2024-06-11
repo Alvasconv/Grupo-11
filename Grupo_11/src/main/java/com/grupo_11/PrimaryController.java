@@ -48,7 +48,8 @@ public class PrimaryController implements Initializable {
     private TextField kilometrajeMax;
     @FXML
     private TextField kilometrajeMin;
-
+    @FXML
+    private Button btnLimpiarFiltro;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -86,7 +87,6 @@ public class PrimaryController implements Initializable {
         App.actualFxml = loader;
         App.stage.setScene(nextScene);
     }
-
 
     private void onMarcaSelected() {
         if (marca.getValue() != null) {
@@ -132,6 +132,7 @@ public class PrimaryController implements Initializable {
         }
 
         mostrarVehiculos(lstFiltrada);
+        btnLimpiarFiltro.setDisable(false);
     }
 
     private void mostrarError(String mensaje) {
@@ -207,12 +208,12 @@ public class PrimaryController implements Initializable {
             );
 
             hboxVehiculo.getChildren().addAll(imageView, vboxDatos);
-            
+
             //Asigna la accion de cambiar a la ventana Detalles
-            hboxVehiculo.setOnMouseClicked((MouseEvent e)-> {
-                try{
+            hboxVehiculo.setOnMouseClicked((MouseEvent e) -> {
+                try {
                     pasarInfoVehiculo(v);
-                }catch(IOException ex){ 
+                } catch (IOException ex) {
                     System.out.println("NO se cargo la pagina detalles");
                     ex.printStackTrace();
                 }
@@ -233,8 +234,8 @@ public class PrimaryController implements Initializable {
         lstvehiculos.getChildren().add(scrollPane);
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
 
-        scrollPane.setFitToWidth(false); 
-        lstvehiculos.getChildren().clear(); 
+        scrollPane.setFitToWidth(false);
+        lstvehiculos.getChildren().clear();
         lstvehiculos.getChildren().add(scrollPane);
         actualizarDatos();
 
@@ -248,16 +249,15 @@ public class PrimaryController implements Initializable {
         }
     }
 
-
-    private void pasarInfoVehiculo(Vehiculo v) throws IOException{
+    private void pasarInfoVehiculo(Vehiculo v) throws IOException {
         FXMLLoader loader;
         Parent p;
         Scene nextScene;
-        if(App.historial.hasNext(App.actualFxml)){
+        if (App.historial.hasNext(App.actualFxml)) {
             loader = App.historial.getNext(App.actualFxml);
             p = loader.getRoot();
             nextScene = p.getScene();
-        }else{
+        } else {
             loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("DetallesVehiculo.fxml"));
             App.historial.add(loader, App.actualFxml);
@@ -270,4 +270,12 @@ public class PrimaryController implements Initializable {
         App.stage.setTitle("Detalles del Vehiculo");
         App.stage.setScene(nextScene);
     }
+
+    @FXML
+    private void limpiarFiltro(ActionEvent event) {
+        ArrayListED<Vehiculo> lst = Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos);
+        mostrarVehiculos(lst);
+        btnLimpiarFiltro.setDisable(true);
+    }
+
 }
