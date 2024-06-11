@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.UUID;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -67,6 +68,7 @@ public class AddVehiculoController implements Initializable {
     private ImageView selectedItem;
     private CircularListED<String> clFotos;
     protected ArrayListED<File> filesFotos;
+    static String uniqueID;
 
     /**
      * Initializes the controller class.
@@ -76,6 +78,8 @@ public class AddVehiculoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        uniqueID = UUID.randomUUID().toString();
+        uniqueID = uniqueID.substring(0, 7);
         addFotos();
         continuar();
         volver();
@@ -106,7 +110,7 @@ public class AddVehiculoController implements Initializable {
                 imgv.setOnMouseClicked(itemResaltado());
 
                 panelFotos.getChildren().add(imgv);
-                clFotos.add(fotoFile.getName());
+                clFotos.add(uniqueID+fotoFile.getName());
                 filesFotos.add(fotoFile);
             }
         });
