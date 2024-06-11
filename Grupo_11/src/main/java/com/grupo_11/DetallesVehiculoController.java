@@ -23,6 +23,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -66,6 +68,7 @@ public class DetallesVehiculoController implements Initializable {
         cambiarFotoAnt();
         cambiarFotoSig();
         volver();
+        editarVehiculo();
     }
     
     public void cargarVehiculo(Vehiculo v){
@@ -113,6 +116,7 @@ public class DetallesVehiculoController implements Initializable {
     }
     
     private void cargarListaReparaciones(){
+        if(!panelInfo.getChildren().isEmpty()){panelInfo.getChildren().clear();}
         for(String s: vehiculo.getReparaciones() ){
             Label valor = new Label(s);
             valor.getStyleClass().add("texto");
@@ -148,6 +152,8 @@ public class DetallesVehiculoController implements Initializable {
             Parent p = backloader.getRoot();
             Scene s = p.getScene();
             App.actualFxml = backloader;
+            PrimaryController controller = backloader.getController();
+            controller.mostrarVehiculos(Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos));
             App.stage.setTitle("Catalogo de Vehiculos");
             App.stage.setScene(s);
         });
@@ -195,10 +201,37 @@ public class DetallesVehiculoController implements Initializable {
         }
     }
     
+<<<<<<< HEAD
 //     @FXML
 //    private void marcarFavorito(ActionEvent event) {
 //        // Implementación del método de acción
 //        
 //    }
 //    
+=======
+     private void editarVehiculo(){
+        btnEditar.setOnMouseClicked((MouseEvent e)->{
+            
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("EditarVehiculo.fxml"));
+                Parent p = loader.load();
+                Stage newStage = new Stage();
+                newStage.getIcons().add(App.loadImage(App.pathIconos+"icono.png"));
+                newStage.setTitle("Editar Vehiculo");
+                EditarVehiculoController controller = loader.getController();
+                controller.cargarInfo(vehiculo, newStage, loader);
+                App.historial.add(loader);
+                App.actualFxml = loader;
+                newStage.setScene(new Scene(p, 600, 450));
+
+                newStage.initModality(Modality.APPLICATION_MODAL);
+                newStage.initOwner(null);
+                newStage.showAndWait();
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+>>>>>>> 59d4f359babac216293f8742945a22354e4d0b9a
 }

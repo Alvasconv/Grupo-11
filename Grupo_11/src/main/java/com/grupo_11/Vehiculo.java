@@ -216,4 +216,20 @@ public class Vehiculo implements Serializable {
                 +"-"+ fotos.print();
     }
     
+    public static Vehiculo clonarVehiculo(Vehiculo v){
+        Vehiculo newV = new Vehiculo();
+        newV.setMarca(v.getMarca());
+        newV.setAño(v.getAño());
+        newV.setFotos(v.getFotos());
+        newV.setModelo(v.getModelo());
+        newV.setMotor(v.getMotor());
+        newV.setPeso(v.getPeso());
+        newV.setPrecio(v.getPrecio());
+        newV.setReparaciones(v.getReparaciones());
+        newV.setTransmision(v.getTransmision());
+        newV.setUbicacion(v.getUbicacion());
+        
+        return newV;
+    }
+    
 }

@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.UUID;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,7 +22,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -33,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 /**
@@ -40,62 +39,44 @@ import javafx.stage.StageStyle;
  *
  * @author vv
  */
-public class AddVehiculoController implements Initializable {
+public class EditarVehiculoController implements Initializable {
 
-    @FXML
-    private Button btnContinuar;
-    @FXML
-    private Button btnVolver;
-    @FXML
-    private Button btnAdd;
-    @FXML
-    private Button btnDelete;
-    @FXML
-    private TextField txtMarca;
-    @FXML
-    private TextField txtModelo;
-    @FXML
-    private TextField txtAnio;
-    @FXML
-    private TextField txtKilometraje;
-    @FXML
-    private TextField txtPrecio;
-    @FXML
-    private VBox panelFotos;
-    @FXML
-    private Label info;
-    private Vehiculo vehiculoCreado;
+    @FXML private Button btnContinuar;
+    @FXML private Button btnAdd;
+    @FXML private Button btnDelete;
+    @FXML private TextField txtMarca;
+    @FXML private TextField txtModelo;
+    @FXML private TextField txtAnio;
+    @FXML private TextField txtKilometraje;
+    @FXML private TextField txtPrecio;
+    @FXML private VBox panelFotos;
+    
+    private Vehiculo vehiculoEditado;
+    static Vehiculo vehiculoAnterior;
     private ImageView selectedItem;
-    private CircularListED<String> clFotos;
-    protected ArrayListED<File> filesFotos;
-    static String uniqueID;
-
+    private ArrayListED<String> fotosSubidas;
+    static Stage actualStage;
+    protected FXMLLoader actualLoader;
+    
+    
     /**
      * Initializes the controller class.
-     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        uniqueID = UUID.randomUUID().toString();
-        uniqueID = uniqueID.substring(0, 7);
         addFotos();
         continuar();
-        volver();
         deleteImg();
-    }
-
+        
+    }    
+      
     private void addFotos() {
         btnAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent x) {
-                if (filesFotos == null) {
-                    filesFotos = new ArrayListED<>();
-                }
-                if (clFotos == null) {
-                    clFotos = new CircularListED<>();
-                }
+                if (fotosSubidas == null) {fotosSubidas = new ArrayListED<>();}
                 //Cargar foto del usuario
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.getExtensionFilters().addAll(
@@ -108,21 +89,22 @@ public class AddVehiculoController implements Initializable {
                 imgv.setFitWidth(200);
                 imgv.setPreserveRatio(true);
                 imgv.setOnMouseClicked(itemResaltado());
-
+                //Guarda el path completo de la foto cargada
+                fotosSubidas.add(fotoFile.getPath());
                 panelFotos.getChildren().add(imgv);
-                clFotos.add(uniqueID+fotoFile.getName());
-                filesFotos.add(fotoFile);
+                
+                System.out.println("clFotos "+fotosSubidas.size()+" -> "+fotosSubidas.print());
             }
         });
     }
 
     private boolean creacionVehiculo() {
-        if (vehiculoCreado == null) {
-            vehiculoCreado = new Vehiculo();
+        if (vehiculoEditado == null) {
+            vehiculoEditado = new Vehiculo();
         }
 
-        vehiculoCreado.setMarca(txtMarca.getText());
-        vehiculoCreado.setModelo(txtModelo.getText());
+        vehiculoEditado.setMarca(txtMarca.getText());
+        vehiculoEditado.setModelo(txtModelo.getText());
 
         try {
             int año = Integer.parseInt(txtAnio.getText().trim());
@@ -143,12 +125,12 @@ public class AddVehiculoController implements Initializable {
             }
 
             // Si todas las validaciones pasan, asigna los valores al vehículo
-            vehiculoCreado.setMarca(txtMarca.getText());
-            vehiculoCreado.setModelo(txtModelo.getText());
-            vehiculoCreado.setAño(Integer.parseInt(txtAnio.getText()));
-            vehiculoCreado.setKilometraje(Double.parseDouble(txtKilometraje.getText()));
-            vehiculoCreado.setPrecio(Double.parseDouble(txtPrecio.getText()));
-            vehiculoCreado.setFotos(clFotos);
+            vehiculoEditado.setMarca(txtMarca.getText());
+            vehiculoEditado.setModelo(txtModelo.getText());
+            vehiculoEditado.setAño(Integer.parseInt(txtAnio.getText()));
+            vehiculoEditado.setKilometraje(Double.parseDouble(txtKilometraje.getText()));
+            vehiculoEditado.setPrecio(Double.parseDouble(txtPrecio.getText()));
+            
 
             return true;
         } catch (NumberFormatException e) {
@@ -169,13 +151,12 @@ public class AddVehiculoController implements Initializable {
             return false;
         }
     }
-
+    
     private void continuar() {
         btnContinuar.setOnAction((ActionEvent e) -> {
             // Validar si todos los campos están llenos
             if (txtMarca.getText().isEmpty() || txtModelo.getText().isEmpty() || txtPrecio.getText().isEmpty()
                     || txtKilometraje.getText().isEmpty() || panelFotos.getChildren().isEmpty()) {
-                info.setText("ⓘ No se han completado todos los campos");
                 return; // Salir del método si no se han completado todos los campos
             }
             if (!creacionVehiculo()) {
@@ -189,40 +170,8 @@ public class AddVehiculoController implements Initializable {
             }
         });
     }
-
-    private void volver() {
-        btnVolver.setOnAction((ActionEvent e) -> {
-            App.historial.removeLast();
-            FXMLLoader backloader = App.historial.getLast();
-            Parent p = backloader.getRoot();
-            Scene s = p.getScene();
-            App.actualFxml = backloader;
-            App.stage.setTitle("Catalogo de Vehiculos");
-            App.stage.setScene(s);
-        });
-    }
-
-//    private void pasarInfoVehiculo() throws IOException {
-//        FXMLLoader loader;
-//        Parent p;
-//        Scene nextScene;
-//        if (App.historial.hasNext(App.actualFxml)) {
-//            loader = App.historial.getNext(App.actualFxml);
-//            p = loader.getRoot();
-//            nextScene = p.getScene();
-//        } else {
-//            loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("AddVehiculo2.fxml"));
-//            App.historial.add(loader, App.actualFxml);
-//            p = loader.load();
-//            nextScene = new Scene(p);
-//        }
-//        App.actualFxml = loader;
-//        AddVehiculo2Controller controller = loader.getController();
-//        controller.cargarVehiculo(vehiculoCreado, filesFotos);
-//        App.stage.setScene(nextScene);
-//    }
-    private void pasarInfoVehiculo() throws IOException {
+  
+    private void pasarInfoVehiculo() throws IOException{
         FXMLLoader loader;
         Parent p;
         Scene nextScene;
@@ -230,38 +179,22 @@ public class AddVehiculoController implements Initializable {
         if (App.historial.hasNext(App.actualFxml)) {
             loader = App.historial.getNext(App.actualFxml);
             p = loader.getRoot();
-            if (p == null) {
-                System.out.println("Error: El loader.getRoot() devolvió null.");
-            }
-            nextScene = p != null ? p.getScene() : null;
+            nextScene = p.getScene();
         } else {
             loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("AddVehiculo2.fxml"));
+            loader.setLocation(getClass().getResource("EditarVehiculo2.fxml"));
             App.historial.add(loader, App.actualFxml);
-            try {
-                p = loader.load();
-            } catch (IOException e) {
-                System.out.println("Error cargando el archivo FXML: " + e.getMessage());
-                throw e;
-            }
-            if (p == null) {
-                System.out.println("Error: El loader.load() devolvió null.");
-            }
+            p = loader.load();
             nextScene = new Scene(p);
         }
-
-        if (nextScene == null) {
-            System.out.println("Error: nextScene es null.");
-            return;
-        }
-
+        for(String f: fotosSubidas){System.out.println(f);}
         App.actualFxml = loader;
-        AddVehiculo2Controller controller = loader.getController();
-        controller.cargarVehiculo(vehiculoCreado, filesFotos);
-        App.stage.setScene(nextScene);
+        EditarVehiculo2Controller controller = loader.getController();
+        controller.cargarVehiculo(vehiculoEditado, fotosSubidas);
+        EditarVehiculoController.actualStage.setScene(nextScene);
     }
-
-    public EventHandler<MouseEvent> itemResaltado() {
+    
+   public EventHandler<MouseEvent> itemResaltado() {
         return e -> {
             if (e.getSource() instanceof ImageView) {
                 ImageView imv = (ImageView) e.getSource();
@@ -279,28 +212,70 @@ public class AddVehiculoController implements Initializable {
             }
         };
     }
+    
+    public void deleteImg(){
+        btnDelete.setOnMouseClicked((MouseEvent e)->{ 
+            if (selectedItem == null) {return;}
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Confirm Deletion");
+                alert.setHeaderText(null);
+                alert.setContentText("Seguro de borrar esta foto?");
+                alert.initModality(Modality.APPLICATION_MODAL);
+                alert.initStyle(StageStyle.UTILITY);
 
-    public void deleteImg() {
-        btnDelete.setOnMouseClicked((MouseEvent e) -> {
-            if (selectedItem == null) {
-                return;
-            }
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Confirm Deletion");
-            alert.setHeaderText(null);
-            alert.setContentText("Seguro de borrar esta foto?");
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.initStyle(StageStyle.UTILITY);
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                int ind = panelFotos.getChildren().indexOf(selectedItem);
-                panelFotos.getChildren().remove(selectedItem);
-                clFotos.remove(ind);
-                filesFotos.remove(ind);
-                selectedItem = null;
-            }
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    int ind = panelFotos.getChildren().indexOf(selectedItem);
+                    fotosSubidas.remove(ind);
+                    panelFotos.getChildren().remove(selectedItem);
+                    selectedItem = null;
+                }
+                
+            System.out.println("clFotos "+fotosSubidas.size()+" -> "+fotosSubidas.print());
         });
     }
+    
+    public void cargarInfo(Vehiculo v, Stage st, FXMLLoader loader){
+        if(actualLoader==null) {actualLoader = loader;}
+        EditarVehiculoController.actualStage=st;
+        cerrarVentana();
+        vehiculoAnterior = v;
+        vehiculoEditado = Vehiculo.clonarVehiculo(v);
+        String s = vehiculoEditado.getFotos().get(0);
+        
+        for(int i=0;i<vehiculoEditado.getFotos().size();i++){
+            File f = new File(App.pathFotos+s);
+            mostrarImagen(f);
+            s = v.getFotos().getNext(s);
+            fotosSubidas.add(f.getPath());
+        }
 
+        System.out.println("fotosSubidas "+fotosSubidas.size()+" -> "+fotosSubidas.print());
+        System.out.println("clFotos "+vehiculoEditado.getFotos().size()+" -> "+vehiculoEditado.getFotos().print());
+        
+        txtMarca.setText(vehiculoEditado.getMarca());
+        txtModelo.setText(vehiculoEditado.getModelo());
+        txtAnio.setText(String.valueOf(vehiculoEditado.getAño()));
+        txtKilometraje.setText(String.valueOf(vehiculoEditado.getKilometraje()));
+        txtPrecio.setText(String.valueOf(vehiculoEditado.getPrecio()));
+    }
+    
+    private void mostrarImagen(File f){
+        ImageView imgv = new ImageView();
+        imgv.setImage(new Image(f.toURI().toString()));
+        imgv.setFitWidth(200);
+        imgv.setPreserveRatio(true);
+        imgv.setOnMouseClicked(itemResaltado());
+        if(fotosSubidas==null) { fotosSubidas = new ArrayListED<>();}
+        panelFotos.getChildren().add(imgv);
+        
+    }
+    
+    private void cerrarVentana(){
+        EditarVehiculoController.actualStage.setOnCloseRequest(e->{
+            App.historial.removeLast();
+            App.actualFxml = App.historial.getLast();
+        });
+    }
+    
 }

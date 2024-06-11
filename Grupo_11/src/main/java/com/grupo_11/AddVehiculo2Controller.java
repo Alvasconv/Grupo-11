@@ -200,9 +200,8 @@ public class AddVehiculo2Controller implements Initializable {
 
 
     private void guardarFotos(ArrayListED<File> files){
-        String uniqueID = UUID.randomUUID().toString();
         for (File f : files) {
-                saveFile(App.pathFotos, f, uniqueID.substring(0, 7));
+                saveFile(App.pathFotos, f, AddVehiculoController.uniqueID);
             }
     }
     
