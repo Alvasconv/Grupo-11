@@ -57,7 +57,6 @@ public class PrimaryController implements Initializable {
 
     private ComboBox<String> ordenar;
 
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ordenar = new ComboBox<>();
@@ -74,10 +73,10 @@ public class PrimaryController implements Initializable {
         kilometrajeMax.setDisable(true);
         marca.setOnAction(event -> onMarcaSelected());
         modelo.setOnAction(event -> onModeloSelected());
-        
+
         inicializarComboBox();
         ordenar.setOnAction(event -> ordenarVehiculos());  // Manejar la selección de ordenación
-
+        btnLimpiarFiltro.setDisable(true);
     }
 
     @FXML
@@ -160,6 +159,7 @@ public class PrimaryController implements Initializable {
         for (Vehiculo v : vehiculos) {
             marcas.add(v.getMarca());
         }
+        marca.getItems().clear();
         marca.setItems(FXCollections.observableArrayList(marcas));
     }
 
@@ -214,17 +214,16 @@ public class PrimaryController implements Initializable {
             VBox vboxDatos = new VBox();
             vboxDatos.setSpacing(5);
 
-             Label marcaV = new Label(v.getMarca());
+            Label marcaV = new Label(v.getMarca());
             marcaV.getStyleClass().add("texto1");
-            
-            Label kilometraje = new Label( v.getAño()+" - " + v.getKilometraje() + " km" );
+
+            Label kilometraje = new Label(v.getAño() + " - " + v.getKilometraje() + " km");
             kilometraje.getStyleClass().add("texto");
-            
+
             Label ubicacion = new Label(v.getUbicacion());
             ubicacion.getStyleClass().add("texto");
-           
-            vboxDatos.getChildren().addAll(marcaV, kilometraje, ubicacion);
 
+            vboxDatos.getChildren().addAll(marcaV, kilometraje, ubicacion);
 
             hboxVehiculo.getChildren().addAll(imageView, vboxDatos);
 
@@ -257,17 +256,29 @@ public class PrimaryController implements Initializable {
         scrollPane.setFitToWidth(false);
         lstvehiculos.getChildren().clear();
         lstvehiculos.getChildren().add(scrollPane);
+
         actualizarDatos();
 
     }
 
     private void actualizarDatos() {
-        for (Vehiculo v : Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos)) {
-            marca.getItems().add(v.getMarca());
-            modelo.getItems().add(v.getModelo());
+        Set<String> marcas = new HashSet<>();
+        Set<String> modelos = new HashSet<>();
 
+        for (Vehiculo v : Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos)) {
+            marcas.add(v.getMarca());
+            modelos.add(v.getModelo());
         }
+
+        // Limpiar ComboBox antes de agregar nuevos valores
+        marca.getItems().clear();
+        modelo.getItems().clear();
+
+        // Agregar valores únicos a los ComboBox
+        marca.getItems().addAll(marcas);
+        modelo.getItems().addAll(modelos);
     }
+
 
     private void pasarInfoVehiculo(Vehiculo v) throws IOException {
         FXMLLoader loader;
@@ -296,40 +307,49 @@ public class PrimaryController implements Initializable {
         ArrayListED<Vehiculo> lst = Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos);
         mostrarVehiculos(lst);
         btnLimpiarFiltro.setDisable(true);
+        marca.getSelectionModel().clearSelection();
+        modelo.getSelectionModel().clearSelection();
+        precioMin.clear();
+        precioMax.clear();
+        kilometrajeMin.clear();
+        kilometrajeMax.clear();
+        modelo.setDisable(true);
+        precioMin.setDisable(true);
+        precioMax.setDisable(true);
+        kilometrajeMin.setDisable(true);
+        kilometrajeMax.setDisable(true);
     }
 
-
-    
     private void inicializarComboBox() {
-    ObservableList<String> opciones = FXCollections.observableArrayList( "Menor Precio","Mayor Precio", "Menor recorrido", "Mayor recorrido");
-    ordenar.setItems(opciones);
-}
-
- private void ordenarVehiculos() {
-    String criterioSeleccionado = ordenar.getValue();
-    ArrayListED<Vehiculo> vehiculos = Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos);
-
-    Comparator<Vehiculo> comparador = null;
-
-    switch (criterioSeleccionado) {
-        case "Menor Precio":
-            comparador = new OrdenarPrecio();
-            break;
-        case "Mayor Precio":
-            comparador = new OrdenarPrecio().reversed();
-            break;
-        case "Menor recorrido":
-            comparador = new OrdenarKilometraje();
-            break;
-        case "Mayor recorrido":
-            comparador = new OrdenarKilometraje().reversed();
-            break;
+        ObservableList<String> opciones = FXCollections.observableArrayList("Menor Precio", "Mayor Precio", "Menor recorrido", "Mayor recorrido");
+        ordenar.setItems(opciones);
     }
 
-    if (comparador != null) {
-        vehiculos.sort(comparador);
+    private void ordenarVehiculos() {
+        String criterioSeleccionado = ordenar.getValue();
+        ArrayListED<Vehiculo> vehiculos = Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos);
+
+        Comparator<Vehiculo> comparador = null;
+
+        switch (criterioSeleccionado) {
+            case "Menor Precio":
+                comparador = new OrdenarPrecio();
+                break;
+            case "Mayor Precio":
+                comparador = new OrdenarPrecio().reversed();
+                break;
+            case "Menor recorrido":
+                comparador = new OrdenarKilometraje();
+                break;
+            case "Mayor recorrido":
+                comparador = new OrdenarKilometraje().reversed();
+                break;
+        }
+
+        if (comparador != null) {
+            vehiculos.sort(comparador);
+        }
+        mostrarVehiculos(vehiculos);
     }
-    mostrarVehiculos(vehiculos);
-}
 
 }
