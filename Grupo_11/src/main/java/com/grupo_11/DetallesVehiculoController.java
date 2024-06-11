@@ -11,7 +11,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +21,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -53,6 +51,7 @@ public class DetallesVehiculoController implements Initializable {
     @FXML Label motor;
     @FXML Label transmision;
     @FXML Label peso;
+    @FXML Button favorito;
     
     private Vehiculo vehiculo;
     
@@ -195,4 +194,11 @@ public class DetallesVehiculoController implements Initializable {
             }
         }
     }
+    
+//     @FXML
+//    private void marcarFavorito(ActionEvent event) {
+//        // Implementación del método de acción
+//        
+//    }
+//    
 }
