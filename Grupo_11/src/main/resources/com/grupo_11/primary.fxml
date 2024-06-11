@@ -156,6 +156,7 @@
          <children>
             <Button fx:id="botonFavoritos" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#añadirVehiculo" styleClass="botones1" stylesheets="@../../css/estilos.css" text="Ver favoritos" />
             <Button fx:id="botonAñadir" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#añadirVehiculo" styleClass="botones1" stylesheets="@../../css/estilos.css" text="Añadir vehículo" />
+            <Button fx:id="btnTabComp" alignment="TOP_CENTER" layoutX="451.0" layoutY="10.0" mnemonicParsing="false" onAction="#añadirVehiculo" styleClass="botones1" stylesheets="@../../css/estilos.css" text="Tabla Parametrizada" />
          </children>
       </HBox>
    </bottom>
