@@ -116,11 +116,7 @@ public class DetallesVehiculoController implements Initializable {
         motor.setText(vehiculo.getMotor());
         transmision.setText(vehiculo.getTransmision());
         cargarListaReparaciones();
-        if (isFavorito(vehiculo)) {
-            iconoFavorito.setImage(new Image(getClass().getResourceAsStream("/archivos/iconos/favoritoTRUE.png")));
-        } else {
-            iconoFavorito.setImage(new Image(getClass().getResourceAsStream("/archivos/iconos/fav.png")));
-        }
+        actualizarIconoFavorito();
     }
 
     private void cambiarFotoSig() {
@@ -241,52 +237,64 @@ public class DetallesVehiculoController implements Initializable {
 
     @FXML
     private void marcarFavorito(ActionEvent event) {
-        if (isFavorito(vehiculo)) {
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Confirmación");
-            alert.setHeaderText(null);
-            alert.setContentText("Este vehículo ya se encuentra como favorito, ¿desea deshacer la acción?");
+        if (esFavorito(vehiculo)) {
+            mostrarMensaje("Este vehículo ya se encuentra como favorito", true);
+            return;
+        }
 
-            ButtonType buttonTypeYes = new ButtonType("Sí");
-            ButtonType buttonTypeNo = new ButtonType("No");
-            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmación");
+        alert.setHeaderText(null);
+        alert.setContentText("¿Está seguro de añadir este vehículo a favoritos?");
 
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == buttonTypeYes) {
-                removeFavorito(vehiculo);
-                iconoFavorito.setImage(new Image(getClass().getResourceAsStream("/archivos/iconos/fav.png")));
-                mostrarMensaje("Se ha deshecho la acción de marcar como favorito.");
-            }
-        } else {
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Confirmación");
-            alert.setHeaderText(null);
-            alert.setContentText("¿Está seguro de añadir este vehículo a favoritos?");
+        ButtonType buttonTypeYes = new ButtonType("Sí");
+        ButtonType buttonTypeNo = new ButtonType("No");
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
 
-            ButtonType buttonTypeYes = new ButtonType("Sí");
-            ButtonType buttonTypeNo = new ButtonType("No");
-            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == buttonTypeYes) {
+            // Lógica para añadir el vehículo a favoritos
+            guardarFavorito(vehiculo);
+            mostrarMensaje("Se ha agregado a favoritos correctamente", false);
 
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == buttonTypeYes) {
-                guardarFavorito(vehiculo);
-                iconoFavorito.setImage(new Image(getClass().getResourceAsStream("/archivos/iconos/favoritoTRUE.png")));
-                mostrarMensaje("Se ha agregado a favoritos correctamente.");
-            }
+            // Cambiar la imagen del botón favorito
+            iconoFavorito.setImage(new Image(getClass().getResourceAsStream("/archivos/iconos/favoritoTRUE.png")));
         }
     }
 
-    private boolean isFavorito(Vehiculo vehiculo) {
+    private boolean esFavorito(Vehiculo vehiculo) {
         String filePath = "src/main/resources/archivos/favoritos.txt";
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        File file = new File(filePath);
+        if (!file.exists() || file.length() == 0) {
+            // El archivo no existe o está vacío
+            return false;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.contains(vehiculo.getMarca()) && line.contains(vehiculo.getModelo())) {
-                    return true;
+                String[] parts = line.split(",");
+                if (parts.length >= 10) {
+                    double precio = Double.parseDouble(parts[0]);
+                    String marca = parts[1];
+                    String modelo = parts[2];
+                    int año = Integer.parseInt(parts[3]);
+                    double kilometraje = Double.parseDouble(parts[4]);
+                    String motor = parts[5];
+                    String transmision = parts[6];
+                    double peso = Double.parseDouble(parts[7]);
+                    String ubicacion = parts[8];
+                    if (vehiculo.getPrecio() == precio && vehiculo.getMarca().equals(marca)
+                            && vehiculo.getModelo().equals(modelo) && vehiculo.getAño() == año
+                            && vehiculo.getKilometraje() == kilometraje && vehiculo.getMotor().equals(motor)
+                            && vehiculo.getTransmision().equals(transmision) && vehiculo.getPeso() == peso
+                            && vehiculo.getUbicacion().equals(ubicacion)) {
+                        return true;
+                    }
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            mostrarMensaje("Error al leer favoritos: " + e.getMessage(), false);
         }
         return false;
     }
@@ -294,52 +302,34 @@ public class DetallesVehiculoController implements Initializable {
     private void guardarFavorito(Vehiculo vehiculo) {
         String filePath = "src/main/resources/archivos/favoritos.txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            // Convertir las listas de reparaciones y fotos a una cadena separada por comas
             String reparaciones = String.join(";", vehiculo.getReparaciones().toStringArray());
             String fotos = String.join(";", vehiculo.getFotos().toStringArray());
 
             writer.write(vehiculo.getPrecio() + "," + vehiculo.getMarca() + "," + vehiculo.getModelo() + "," + vehiculo.getAño() + ","
                     + vehiculo.getKilometraje() + "," + vehiculo.getMotor() + "," + vehiculo.getTransmision() + "," + vehiculo.getPeso() + ","
-                    + vehiculo.getUbicacion() + "," + reparaciones + "," + fotos + "\n");
+                    + vehiculo.getUbicacion() + "," + reparaciones + "-" + fotos + "\n");
         } catch (IOException e) {
-            mostrarMensaje("Error al guardar en favoritos: " + e.getMessage());
+            mostrarMensaje("Error al guardar en favoritos: " + e.getMessage(), false);
         }
     }
 
-    private void removeFavorito(Vehiculo vehiculo) {
-        String filePath = "src/main/resources/archivos/favoritos.txt";
-        File inputFile = new File(filePath);
-        File tempFile = new File("src/main/resources/archivos/favoritos_temp.txt");
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile)); BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.contains(vehiculo.getMarca()) && line.contains(vehiculo.getModelo())) {
-                    continue;
-                }
-                writer.write(line);
-                writer.newLine();
-            }
-
-            if (!inputFile.delete()) {
-                mostrarMensaje("Error al eliminar el archivo original.");
-                return;
-            }
-            if (!tempFile.renameTo(inputFile)) {
-                mostrarMensaje("Error al renombrar el archivo temporal.");
-            }
-
-        } catch (IOException e) {
-            mostrarMensaje("Error al deshacer favorito: " + e.getMessage());
-        }
-    }
-
-    private void mostrarMensaje(String mensaje) {
-        Alert alert = new Alert(AlertType.INFORMATION);
+    private void mostrarMensaje(String mensaje, boolean soloInformativo) {
+        Alert alert = new Alert(soloInformativo ? AlertType.INFORMATION : AlertType.WARNING);
         alert.setTitle("Información");
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
+        ButtonType buttonTypeEntendido = new ButtonType("Entendido");
+        alert.getButtonTypes().setAll(buttonTypeEntendido);
         alert.showAndWait();
+    }
+
+    private void actualizarIconoFavorito() {
+        if (esFavorito(vehiculo)) {
+            iconoFavorito.setImage(new Image(getClass().getResourceAsStream("/archivos/iconos/favoritoTRUE.png")));
+        } else {
+            iconoFavorito.setImage(new Image(getClass().getResourceAsStream("/archivos/iconos/fav.png")));
+        }
     }
 
     private void editarVehiculo() {
