@@ -14,6 +14,7 @@ import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -54,6 +55,8 @@ public class PrimaryController implements Initializable {
     private TextField kilometrajeMin;
     @FXML
     private Button btnLimpiarFiltro;
+    @FXML
+    private Button botonFavoritos;
 
     private ComboBox<String> ordenar;
 
@@ -77,6 +80,7 @@ public class PrimaryController implements Initializable {
         inicializarComboBox();
         ordenar.setOnAction(event -> ordenarVehiculos());  // Manejar la selección de ordenación
         btnLimpiarFiltro.setDisable(true);
+        verFavoritos();
     }
 
     @FXML
@@ -223,7 +227,10 @@ public class PrimaryController implements Initializable {
             Label ubicacion = new Label(v.getUbicacion());
             ubicacion.getStyleClass().add("texto");
 
-            vboxDatos.getChildren().addAll(marcaV, kilometraje, ubicacion);
+            Label precioV = new Label("$"+v.getPrecio());
+            precioV.getStyleClass().add("texto1");
+
+            vboxDatos.getChildren().addAll(marcaV, kilometraje, ubicacion, precioV);
 
             hboxVehiculo.getChildren().addAll(imageView, vboxDatos);
 
@@ -350,6 +357,27 @@ public class PrimaryController implements Initializable {
             vehiculos.sort(comparador);
         }
         mostrarVehiculos(vehiculos);
+    }
+    
+    private void verFavoritos(){
+        botonFavoritos.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                FXMLLoader loader;
+                Parent p;
+                Scene nextScene;
+                try{
+                loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("Favoritos.fxml"));
+                App.historial.add(loader, App.actualFxml);
+                p = loader.load();
+                nextScene = new Scene(p);
+                App.actualFxml = loader;
+                App.stage.setTitle("Lista de Favoritos");
+                App.stage.setScene(nextScene);
+                }catch(IOException ex) {ex.getMessage();}
+            }
+        });
     }
 
 }

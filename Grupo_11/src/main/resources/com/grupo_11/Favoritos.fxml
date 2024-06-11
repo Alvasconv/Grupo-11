@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox prefHeight="500.0" prefWidth="600.0" styleClass="fondoVentana1" stylesheets="@../../css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grupo_11.FavoritosController">
+   <children>
+      <HBox alignment="CENTER">
+         <children>
+            <Button fx:id="btnVolver" mnemonicParsing="false" styleClass="botones2" stylesheets="@../../../../../../../../Grupo-11/Grupo_11/src/main/resources/css/estilos.css">
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../archivos/iconos/backIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <HBox alignment="CENTER" prefHeight="51.0" prefWidth="700.0">
+               <children>
+                  <Label alignment="CENTER" styleClass="titulo" stylesheets="@../../css/estilos.css" text="Favoritos" textAlignment="CENTER" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <HBox prefHeight="402.0" prefWidth="700.0">
+         <children>
+            <ScrollPane fx:id="panel" hbarPolicy="NEVER" prefHeight="401.0" prefWidth="628.0">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </ScrollPane>
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+   </padding>
+</VBox>
