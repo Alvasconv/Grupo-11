@@ -28,7 +28,7 @@
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label text="Ordenar por: " />
-                  <ComboBox fx:id="ordenar" prefWidth="150.0" />
+                  <ComboBox fx:id="ordenar" prefWidth="150.0" styleClass="fondoElemento1" stylesheets="@../../css/estilos.css" />
                </children>
                <opaqueInsets>
                   <Insets />

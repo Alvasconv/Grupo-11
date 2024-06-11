@@ -57,12 +57,14 @@ public class PrimaryController implements Initializable {
     private Button btnLimpiarFiltro;
     @FXML
     private Button botonFavoritos;
-
-    private ComboBox<String> ordenar;
+    @FXML
+    private ComboBox<String> ordenar = new ComboBox<>();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ordenar = new ComboBox<>();
+        ObservableList<String> opciones = FXCollections.observableArrayList("Menor Precio", "Mayor Precio", "Menor recorrido", "Mayor recorrido");
+        ordenar.getItems().addAll(opciones);
+        
         try {
             mostrarVehiculos(Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos));
         } catch (Exception e) {
@@ -77,7 +79,7 @@ public class PrimaryController implements Initializable {
         marca.setOnAction(event -> onMarcaSelected());
         modelo.setOnAction(event -> onModeloSelected());
 
-        inicializarComboBox();
+        //inicializarComboBox();
         ordenar.setOnAction(event -> ordenarVehiculos());  // Manejar la selección de ordenación
         btnLimpiarFiltro.setDisable(true);
         verFavoritos();
