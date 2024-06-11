@@ -21,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -201,14 +202,13 @@ public class DetallesVehiculoController implements Initializable {
         }
     }
     
-<<<<<<< HEAD
 //     @FXML
 //    private void marcarFavorito(ActionEvent event) {
 //        // Implementación del método de acción
 //        
 //    }
 //    
-=======
+
      private void editarVehiculo(){
         btnEditar.setOnMouseClicked((MouseEvent e)->{
             
@@ -233,5 +233,4 @@ public class DetallesVehiculoController implements Initializable {
             }
         });
     }
->>>>>>> 59d4f359babac216293f8742945a22354e4d0b9a
 }

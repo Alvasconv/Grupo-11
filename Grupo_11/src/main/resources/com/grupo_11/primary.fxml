@@ -8,26 +8,17 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<<<<<<< HEAD
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grupo_11.PrimaryController">
-   <top>
-      <VBox alignment="TOP_CENTER" prefHeight="40.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="BOTTOM_CENTER" stylesheets="@../../css/estilos.css" text="PANTALLA PRINCIPAL" textFill="#380b5e">
-=======
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="fondoVentana1" stylesheets="@../../css/estilos.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grupo_11.PrimaryController">
    <top>
       <VBox alignment="TOP_CENTER" prefHeight="40.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="BOTTOM_CENTER" styleClass="titulo" stylesheets="@../../css/estilos.css" text="Catálogo del Vehiculos">
->>>>>>> 59d4f359babac216293f8742945a22354e4d0b9a
                <font>
-                  <Font name="System Bold Italic" size="20.0" />
+                  <Font size="20.0" />
                </font>
                <padding>
                   <Insets bottom="5.0" top="5.0" />
@@ -117,14 +108,9 @@
             <TextField fx:id="precioMin" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="90.0" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="TOP" />
             <TextField fx:id="kilometrajeMax" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="90.0" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="BOTTOM" />
             <TextField fx:id="kilometrajeMin" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="90.0" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP" />
-<<<<<<< HEAD
-            <Button mnemonicParsing="false" onAction="#filtrarVehiculos" text="Filtrar" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
-               <GridPane.margin>
-                  <Insets top="10.0" />
-               </GridPane.margin></Button>
-=======
-            <Button mnemonicParsing="false" onAction="#filtrarVehiculos" styleClass="botones1" text="Filtrar" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
->>>>>>> 59d4f359babac216293f8742945a22354e4d0b9a
+
+                  <Button mnemonicParsing="false" onAction="#filtrarVehiculos" styleClass="botones1" text="Filtrar" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+
          </children>
          <BorderPane.margin>
             <Insets left="5.0" />
@@ -138,18 +124,10 @@
          </padding></VBox>
    </center>
    <bottom>
-<<<<<<< HEAD
-      <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="526.0" spacing="30.0" BorderPane.alignment="CENTER_RIGHT">
-=======
       <Button fx:id="botonAñadir" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#añadirVehiculo" styleClass="botones1" stylesheets="@../../css/estilos.css" text="Añadir vehículo" BorderPane.alignment="CENTER_RIGHT">
->>>>>>> 59d4f359babac216293f8742945a22354e4d0b9a
          <BorderPane.margin>
             <Insets bottom="10.0" right="50.0" />
          </BorderPane.margin>
-         <children>
-            <Button fx:id="ventanaFavoritos" mnemonicParsing="false" onAction="#marcarFavorito" text="Mis Favoritos" />
-            <Button fx:id="botonAñadir" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#añadirVehiculo" text="Añadir vehículo" />
-         </children>
-      </HBox>
+      </Button>
    </bottom>
 </BorderPane>
