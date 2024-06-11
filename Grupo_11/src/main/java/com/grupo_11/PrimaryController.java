@@ -60,6 +60,7 @@ public class PrimaryController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        ordenar = new ComboBox<>();
         try {
             mostrarVehiculos(Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos));
         } catch (Exception e) {
