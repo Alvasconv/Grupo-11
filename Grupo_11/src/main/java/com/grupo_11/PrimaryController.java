@@ -1,10 +1,13 @@
 package com.grupo_11;
 
 import Metodos.FiltroVehiculos;
+import Metodos.OrdenarKilometraje;
+import Metodos.OrdenarPrecio;
 import Modelo.ArrayListED;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -14,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -51,6 +55,9 @@ public class PrimaryController implements Initializable {
     @FXML
     private Button btnLimpiarFiltro;
 
+    private ComboBox<String> ordenar;
+
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -66,6 +73,10 @@ public class PrimaryController implements Initializable {
         kilometrajeMax.setDisable(true);
         marca.setOnAction(event -> onMarcaSelected());
         modelo.setOnAction(event -> onModeloSelected());
+        
+        inicializarComboBox();
+        ordenar.setOnAction(event -> ordenarVehiculos());  // Manejar la selección de ordenación
+
     }
 
     @FXML
@@ -190,6 +201,7 @@ public class PrimaryController implements Initializable {
         for (Vehiculo v : lst) {
             HBox hboxVehiculo = new HBox();
             hboxVehiculo.setSpacing(10);
+            hboxVehiculo.getStyleClass().add("fondoCuadroVehiculo");
 
             String imagePath = Vehiculo.carpetaFotos + v.getFotos().first.getContent();
             File imageFile = new File(imagePath);
@@ -201,11 +213,17 @@ public class PrimaryController implements Initializable {
             VBox vboxDatos = new VBox();
             vboxDatos.setSpacing(5);
 
-            vboxDatos.getChildren().addAll(
-                    new Label(v.getMarca()),
-                    new Label(v.getKilometraje() + " km - " + v.getAño()),
-                    new Label(v.getUbicacion())
-            );
+             Label marcaV = new Label(v.getMarca());
+            marcaV.getStyleClass().add("texto1");
+            
+            Label kilometraje = new Label( v.getAño()+" - " + v.getKilometraje() + " km" );
+            kilometraje.getStyleClass().add("texto");
+            
+            Label ubicacion = new Label(v.getUbicacion());
+            ubicacion.getStyleClass().add("texto");
+           
+            vboxDatos.getChildren().addAll(marcaV, kilometraje, ubicacion);
+
 
             hboxVehiculo.getChildren().addAll(imageView, vboxDatos);
 
@@ -227,6 +245,7 @@ public class PrimaryController implements Initializable {
         }
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(gridPane);
+        scrollPane.setPadding(new Insets(10));
 
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
@@ -277,5 +296,39 @@ public class PrimaryController implements Initializable {
         mostrarVehiculos(lst);
         btnLimpiarFiltro.setDisable(true);
     }
+
+
+    
+    private void inicializarComboBox() {
+    ObservableList<String> opciones = FXCollections.observableArrayList( "Menor Precio","Mayor Precio", "Menor recorrido", "Mayor recorrido");
+    ordenar.setItems(opciones);
+}
+
+ private void ordenarVehiculos() {
+    String criterioSeleccionado = ordenar.getValue();
+    ArrayListED<Vehiculo> vehiculos = Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos);
+
+    Comparator<Vehiculo> comparador = null;
+
+    switch (criterioSeleccionado) {
+        case "Menor Precio":
+            comparador = new OrdenarPrecio();
+            break;
+        case "Mayor Precio":
+            comparador = new OrdenarPrecio().reversed();
+            break;
+        case "Menor recorrido":
+            comparador = new OrdenarKilometraje();
+            break;
+        case "Mayor recorrido":
+            comparador = new OrdenarKilometraje().reversed();
+            break;
+    }
+
+    if (comparador != null) {
+        vehiculos.sort(comparador);
+    }
+    mostrarVehiculos(vehiculos);
+}
 
 }
