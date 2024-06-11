@@ -89,16 +89,7 @@ public class FavoritosController implements Initializable {
             vboxDatos.getChildren().addAll(marcaV, kilometraje, ubicacion, precioV);
 
             hboxVehiculo.getChildren().addAll(imageView, vboxDatos);
-
-            //Asigna la accion de cambiar a la ventana Detalles
-            hboxVehiculo.setOnMouseClicked((MouseEvent e) -> {
-                try {
-                    pasarInfoVehiculo(v);
-                } catch (IOException ex) {
-                    System.out.println("NO se cargo la pagina detalles");
-                    ex.printStackTrace();
-                }
-            });
+            
             gridPane.add(hboxVehiculo, col, row);
             col++;
             if (col >= numColumns) {
