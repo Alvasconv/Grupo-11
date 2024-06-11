@@ -126,6 +126,13 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private void filtrarVehiculos(ActionEvent event) {
+        if (marca.getValue() == null || modelo.getValue() == null
+                || precioMin.getText().isEmpty() || precioMax.getText().isEmpty()
+                || kilometrajeMin.getText().isEmpty() || kilometrajeMax.getText().isEmpty()) {
+            mostrarError("Por favor, complete todos los campos para aplicar el filtro.");
+            return;
+        }
+
         ArrayListED<Vehiculo> lst = Vehiculo.leerListaVehiculos(Vehiculo.archivoVehiculos);
         ArrayListED<Vehiculo> lstFiltrada = FiltroVehiculos.filtrarPorMarcaYModelo(lst, marca.getValue(), modelo.getValue());
 
@@ -393,24 +400,26 @@ public class PrimaryController implements Initializable {
             }
         });
     }
-    
-    private void verTablaComparativa(){
+
+    private void verTablaComparativa() {
         btnTabComp.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 FXMLLoader loader;
                 Parent p;
                 Scene nextScene;
-                try{
-                loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("TablaParametrizada.fxml"));
-                App.historial.add(loader, App.actualFxml);
-                p = loader.load();
-                nextScene = new Scene(p);
-                App.actualFxml = loader;
-                App.stage.setTitle("TablaComparativa");
-                App.stage.setScene(nextScene);
-                }catch(IOException ex) {ex.getMessage();}
+                try {
+                    loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("TablaParametrizada.fxml"));
+                    App.historial.add(loader, App.actualFxml);
+                    p = loader.load();
+                    nextScene = new Scene(p);
+                    App.actualFxml = loader;
+                    App.stage.setTitle("TablaComparativa");
+                    App.stage.setScene(nextScene);
+                } catch (IOException ex) {
+                    ex.getMessage();
+                }
             }
         });
     }
